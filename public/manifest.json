@@ -1,0 +1,17 @@
+{
+  "short_name": "Timeless",
+  "name": "Timeless Watch Shop",
+  "description": "Premium luxury watches e-commerce",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#d4af37",
+  "background_color": "#ffffff",
+  "orientation": "portrait"
+}
