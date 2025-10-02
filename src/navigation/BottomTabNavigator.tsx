@@ -17,22 +17,15 @@ export const BottomTabNavigator: React.FC = () => {
         headerShown: false,
         tabBarActiveTintColor: '#ee4d2d',
         tabBarInactiveTintColor: '#7a7a7a',
+        tabBarShowLabel: false,
         tabBarStyle: {
-          height: 60,
-          paddingTop: 4,
-          paddingBottom: 4,
+          height: 56,
           borderTopWidth: 1,
           borderTopColor: '#e5e5e5',
           backgroundColor: '#ffffff',
         },
-        tabBarLabelStyle: {
-          fontSize: 10,
-          fontWeight: '400',
-          marginTop: -2,
-          marginBottom: 2,
-        },
         tabBarIconStyle: {
-          marginTop: 2,
+          marginTop: 0,
         },
       }}
     >
@@ -40,10 +33,9 @@ export const BottomTabNavigator: React.FC = () => {
         name="HomeTab" 
         component={HomeScreen}
         options={{
-          tabBarLabel: 'Trang chủ',
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: 22, color: focused ? '#ee4d2d' : '#7a7a7a' }}>🏠</Text>
+              <Text style={{ fontSize: 26, color: focused ? '#ee4d2d' : '#7a7a7a' }}>🏠</Text>
             </View>
           ),
         }}
@@ -52,10 +44,9 @@ export const BottomTabNavigator: React.FC = () => {
         name="CatalogTab" 
         component={CatalogScreen}
         options={{
-          tabBarLabel: 'Danh mục',
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: 22, color: focused ? '#ee4d2d' : '#7a7a7a' }}>☰</Text>
+              <Text style={{ fontSize: 26, color: focused ? '#ee4d2d' : '#7a7a7a' }}>☰</Text>
             </View>
           ),
         }}
@@ -64,23 +55,21 @@ export const BottomTabNavigator: React.FC = () => {
         name="CartTab" 
         component={CartScreen}
         options={{
-          tabBarLabel: 'Giỏ hàng',
           tabBarBadge: itemCount > 0 ? itemCount : undefined,
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: 22, color: focused ? '#ee4d2d' : '#7a7a7a' }}>🛒</Text>
+              <Text style={{ fontSize: 26, color: focused ? '#ee4d2d' : '#7a7a7a' }}>🛒</Text>
             </View>
           ),
         }}
       />
       <Tab.Screen 
         name="ProfileTab" 
-        component={isAuthenticated ? ProfileScreen : ProfileScreen}
+        component={ProfileScreen}
         options={{
-          tabBarLabel: isAuthenticated ? 'Tài khoản' : 'Đăng nhập',
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: 22, color: focused ? '#ee4d2d' : '#7a7a7a' }}>
+              <Text style={{ fontSize: 26, color: focused ? '#ee4d2d' : '#7a7a7a' }}>
                 {isAuthenticated ? '👤' : '🔐'}
               </Text>
             </View>
