@@ -7,9 +7,10 @@ import {
   FlatList,
   ActivityIndicator,
   Modal,
+  TextInput,
 } from 'react-native';
 import tw from 'twrnc';
-import { Header, Footer, ProductCard, FilterPanel } from '../components';
+import { ProductCard, FilterPanel } from '../components';
 import { useProductSearch } from '../hooks/useProducts';
 import { useDebounce } from '../hooks/useDebounce';
 import { Filter } from '../types';
@@ -68,20 +69,26 @@ export const CatalogScreen: React.FC = () => {
 
   return (
     <View style={tw`flex-1 bg-white`}>
-      <Header 
-        showSearch 
-        onSearchChange={handleSearchChange}
-        searchValue={searchQuery}
-      />
+      {/* Search Bar - Mobile */}
+      <View style={tw`bg-white px-4 pt-3 pb-2 border-b border-gray-100`}>
+        <TextInput
+          style={tw`bg-gray-100 rounded-xl px-4 py-3 text-base`}
+          placeholder="Search watches..."
+          value={searchQuery}
+          onChangeText={handleSearchChange}
+          accessibilityLabel="Search watches"
+        />
+      </View>
 
-      <View style={tw`flex-row border-b border-gray-200 px-4 py-3 gap-4`}>
+      {/* Filters - Mobile */}
+      <View style={tw`flex-row px-4 py-3 gap-3`}>
         <TouchableOpacity
           onPress={() => setShowFilters(true)}
-          style={tw`flex-row items-center px-4 py-2 border border-gray-300 rounded-lg`}
+          style={tw`flex-row items-center justify-center px-5 py-2.5 bg-gray-900 rounded-xl flex-1`}
           accessibilityLabel={`Open filters. ${activeFilterCount} filters active`}
           accessibilityRole="button"
         >
-          <Text style={tw`text-gray-700 mr-2`}>Filters</Text>
+          <Text style={tw`text-white font-medium mr-2`}>🎛️ Filter</Text>
           {activeFilterCount > 0 && (
             <View style={tw`bg-yellow-600 rounded-full w-5 h-5 items-center justify-center`}>
               <Text style={tw`text-white text-xs font-bold`}>{activeFilterCount}</Text>
@@ -89,13 +96,13 @@ export const CatalogScreen: React.FC = () => {
           )}
         </TouchableOpacity>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {SORT_OPTIONS.map(option => (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={tw`flex-1`}>
+          {SORT_OPTIONS.slice(0, 3).map(option => (
             <TouchableOpacity
               key={option.value}
               onPress={() => setSortBy(option.value)}
               style={[
-                tw`px-4 py-2 rounded-lg mr-2`,
+                tw`px-4 py-2.5 rounded-xl mr-2`,
                 sortBy === option.value ? tw`bg-yellow-600` : tw`bg-gray-100`,
               ]}
               accessibilityLabel={`Sort by ${option.label}`}
@@ -103,11 +110,11 @@ export const CatalogScreen: React.FC = () => {
             >
               <Text
                 style={[
-                  tw`text-sm`,
+                  tw`text-sm font-medium`,
                   sortBy === option.value ? tw`text-white` : tw`text-gray-700`,
                 ]}
               >
-                {option.label}
+                {option.label.replace('Price: ', '')}
               </Text>
             </TouchableOpacity>
           ))}
@@ -115,70 +122,73 @@ export const CatalogScreen: React.FC = () => {
       </View>
 
       <ScrollView style={tw`flex-1`}>
-        <View style={tw`max-w-7xl mx-auto px-4 py-6 w-full`}>
+        <View style={tw`px-4 pt-4 pb-2`}>
           {data && (
-            <Text style={tw`text-gray-600 mb-4`}>
-              {data.total} {data.total === 1 ? 'watch' : 'watches'} found
+            <Text style={tw`text-gray-600 text-sm`}>
+              {data.total} {data.total === 1 ? 'watch' : 'watches'}
             </Text>
           )}
+        </View>
 
-          {isLoading ? (
-            <ActivityIndicator size="large" color="#d4af37" style={tw`mt-8`} />
-          ) : (
-            <>
-              <FlatList
-                data={sortedProducts}
-                numColumns={2}
-                key="catalog-grid"
-                scrollEnabled={false}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                  <View style={tw`w-1/2 p-2`}>
-                    <ProductCard product={item} />
-                  </View>
-                )}
-                ListEmptyComponent={
-                  <View style={tw`py-12`}>
-                    <Text style={tw`text-gray-500 text-center text-lg`}>
-                      No watches found matching your criteria
-                    </Text>
-                  </View>
-                }
-              />
-
-              {data && data.totalPages > 1 && (
-                <View style={tw`flex-row justify-center gap-2 my-8`}>
-                  {page > 1 && (
-                    <TouchableOpacity
-                      onPress={() => setPage(page - 1)}
-                      style={tw`px-4 py-2 border border-gray-300 rounded`}
-                      accessibilityLabel="Previous page"
-                      accessibilityRole="button"
-                    >
-                      <Text>Previous</Text>
-                    </TouchableOpacity>
-                  )}
-                  
-                  <Text style={tw`px-4 py-2`}>
-                    Page {page} of {data.totalPages}
-                  </Text>
-
-                  {page < data.totalPages && (
-                    <TouchableOpacity
-                      onPress={() => setPage(page + 1)}
-                      style={tw`px-4 py-2 border border-gray-300 rounded`}
-                      accessibilityLabel="Next page"
-                      accessibilityRole="button"
-                    >
-                      <Text>Next</Text>
-                    </TouchableOpacity>
-                  )}
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#d4af37" style={tw`mt-12`} />
+        ) : (
+          <>
+            <FlatList
+              data={sortedProducts}
+              numColumns={2}
+              key="catalog-grid"
+              scrollEnabled={false}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <View style={tw`w-1/2 px-2 mb-3`}>
+                  <ProductCard product={item} />
                 </View>
               )}
-            </>
-          )}
-        </View>
-        <Footer />
+              contentContainerStyle={tw`px-2`}
+              ListEmptyComponent={
+                <View style={tw`py-16 px-4`}>
+                  <Text style={tw`text-gray-500 text-center text-base`}>
+                    No watches found
+                  </Text>
+                </View>
+              }
+            />
+
+            {data && data.totalPages > 1 && (
+              <View style={tw`flex-row justify-center gap-3 my-6 px-4`}>
+                {page > 1 && (
+                  <TouchableOpacity
+                    onPress={() => setPage(page - 1)}
+                    style={tw`px-6 py-2.5 bg-gray-100 rounded-xl`}
+                    accessibilityLabel="Previous page"
+                    accessibilityRole="button"
+                  >
+                    <Text style={tw`font-medium`}>← Prev</Text>
+                  </TouchableOpacity>
+                )}
+                
+                <View style={tw`px-4 py-2.5 bg-yellow-600 rounded-xl`}>
+                  <Text style={tw`text-white font-medium`}>
+                    {page} / {data.totalPages}
+                  </Text>
+                </View>
+
+                {page < data.totalPages && (
+                  <TouchableOpacity
+                    onPress={() => setPage(page + 1)}
+                    style={tw`px-6 py-2.5 bg-gray-100 rounded-xl`}
+                    accessibilityLabel="Next page"
+                    accessibilityRole="button"
+                  >
+                    <Text style={tw`font-medium`}>Next →</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
+            <View style={tw`h-6`} />
+          </>
+        )}
       </ScrollView>
 
       <Modal

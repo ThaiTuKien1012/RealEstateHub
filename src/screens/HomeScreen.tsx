@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
-import { Header, Footer, ProductCard } from '../components';
+import { ProductCard } from '../components';
 import { useFeaturedProducts, useBestSellers } from '../hooks/useProducts';
 
 export const HomeScreen: React.FC = () => {
@@ -11,105 +11,108 @@ export const HomeScreen: React.FC = () => {
   const { data: bestSellersData, isLoading: bestSellersLoading } = useBestSellers();
 
   return (
-    <View style={tw`flex-1 bg-white`}>
-      <Header />
-      <ScrollView>
-        <View style={tw`bg-gray-900 py-20 px-4`}>
-          <View style={tw`max-w-4xl mx-auto`}>
-            <Text style={tw`text-white text-4xl md:text-5xl font-bold text-center mb-4`}>
-              Timeless Elegance
+    <ScrollView style={tw`flex-1 bg-white`}>
+      {/* Hero Section - Mobile Native */}
+      <View style={tw`bg-gray-900 pt-12 pb-8 px-4`}>
+        <Text style={tw`text-white text-3xl font-bold text-center mb-3`}>
+          Timeless Elegance
+        </Text>
+        <Text style={tw`text-gray-300 text-base text-center mb-6`}>
+          Discover luxury watches
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CatalogTab')}
+          style={tw`bg-yellow-600 py-3.5 rounded-xl mx-auto px-16`}
+          accessibilityLabel="Shop now"
+          accessibilityRole="button"
+        >
+          <Text style={tw`text-white font-semibold text-base`}>Shop Now</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Featured Collection */}
+      <View style={tw`py-6`}>
+        <View style={tw`px-4 mb-4`}>
+          <Text style={tw`text-2xl font-bold mb-1`}>Featured</Text>
+          <Text style={tw`text-gray-600 text-sm`}>
+            Handpicked timepieces
+          </Text>
+        </View>
+
+        {featuredLoading ? (
+          <ActivityIndicator size="large" color="#d4af37" style={tw`my-8`} />
+        ) : (
+          <FlatList
+            data={featuredData?.data || []}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View style={tw`w-64 ml-4 first:ml-4`}>
+                <ProductCard product={item} />
+              </View>
+            )}
+            contentContainerStyle={tw`pr-4`}
+          />
+        )}
+      </View>
+
+      {/* Best Sellers */}
+      <View style={tw`py-6`}>
+        <View style={tw`px-4 mb-4`}>
+          <Text style={tw`text-2xl font-bold mb-1`}>Best Sellers</Text>
+          <Text style={tw`text-gray-600 text-sm`}>
+            Most popular this month
+          </Text>
+        </View>
+
+        {bestSellersLoading ? (
+          <ActivityIndicator size="large" color="#d4af37" style={tw`my-8`} />
+        ) : (
+          <FlatList
+            data={bestSellersData?.data || []}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View style={tw`w-64 ml-4 first:ml-4`}>
+                <ProductCard product={item} />
+              </View>
+            )}
+            contentContainerStyle={tw`pr-4`}
+          />
+        )}
+      </View>
+
+      {/* Features - Mobile Cards */}
+      <View style={tw`bg-gray-50 py-8 px-4 mt-4`}>
+        <Text style={tw`text-2xl font-bold text-center mb-6`}>Why Choose Us</Text>
+        <View style={tw`gap-4`}>
+          <View style={tw`bg-white p-4 rounded-xl items-center`}>
+            <Text style={tw`text-3xl mb-2`}>✓</Text>
+            <Text style={tw`font-semibold text-base mb-1`}>Authenticity Guaranteed</Text>
+            <Text style={tw`text-gray-600 text-center text-sm`}>
+              Every watch is certified
             </Text>
-            <Text style={tw`text-gray-300 text-lg text-center mb-8`}>
-              Discover the world's finest luxury watches
+          </View>
+          <View style={tw`bg-white p-4 rounded-xl items-center`}>
+            <Text style={tw`text-3xl mb-2`}>🚚</Text>
+            <Text style={tw`font-semibold text-base mb-1`}>Free Shipping</Text>
+            <Text style={tw`text-gray-600 text-center text-sm`}>
+              Worldwide delivery
             </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Catalog')}
-              style={tw`bg-yellow-600 py-3 px-8 rounded-lg self-center`}
-              accessibilityLabel="Shop now"
-              accessibilityRole="button"
-            >
-              <Text style={tw`text-white font-semibold text-lg`}>Shop Now</Text>
-            </TouchableOpacity>
+          </View>
+          <View style={tw`bg-white p-4 rounded-xl items-center`}>
+            <Text style={tw`text-3xl mb-2`}>🔒</Text>
+            <Text style={tw`font-semibold text-base mb-1`}>Secure Payment</Text>
+            <Text style={tw`text-gray-600 text-center text-sm`}>
+              Safe transactions
+            </Text>
           </View>
         </View>
+      </View>
 
-        <View style={tw`max-w-7xl mx-auto px-4 py-12 w-full`}>
-          <Text style={tw`text-3xl font-bold mb-2`}>Featured Collection</Text>
-          <Text style={tw`text-gray-600 mb-6`}>
-            Handpicked timepieces for the discerning collector
-          </Text>
-
-          {featuredLoading ? (
-            <ActivityIndicator size="large" color="#d4af37" />
-          ) : (
-            <FlatList
-              data={featuredData?.data || []}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <View style={tw`w-72 mr-4`}>
-                  <ProductCard product={item} />
-                </View>
-              )}
-            />
-          )}
-        </View>
-
-        <View style={tw`max-w-7xl mx-auto px-4 py-12 w-full`}>
-          <Text style={tw`text-3xl font-bold mb-2`}>Best Sellers</Text>
-          <Text style={tw`text-gray-600 mb-6`}>
-            Our most popular watches this month
-          </Text>
-
-          {bestSellersLoading ? (
-            <ActivityIndicator size="large" color="#d4af37" />
-          ) : (
-            <FlatList
-              data={bestSellersData?.data || []}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <View style={tw`w-72 mr-4`}>
-                  <ProductCard product={item} />
-                </View>
-              )}
-            />
-          )}
-        </View>
-
-        <View style={tw`bg-gray-100 py-16 px-4`}>
-          <View style={tw`max-w-4xl mx-auto`}>
-            <Text style={tw`text-3xl font-bold text-center mb-8`}>Why Choose Us</Text>
-            <View style={tw`flex-row flex-wrap justify-around gap-8`}>
-              <View style={tw`items-center flex-1 min-w-[200px]`}>
-                <Text style={tw`text-4xl mb-2`}>✓</Text>
-                <Text style={tw`font-semibold text-lg mb-2`}>Authenticity Guaranteed</Text>
-                <Text style={tw`text-gray-600 text-center text-sm`}>
-                  Every watch is certified authentic
-                </Text>
-              </View>
-              <View style={tw`items-center flex-1 min-w-[200px]`}>
-                <Text style={tw`text-4xl mb-2`}>🚚</Text>
-                <Text style={tw`font-semibold text-lg mb-2`}>Free Shipping</Text>
-                <Text style={tw`text-gray-600 text-center text-sm`}>
-                  Worldwide delivery on all orders
-                </Text>
-              </View>
-              <View style={tw`items-center flex-1 min-w-[200px]`}>
-                <Text style={tw`text-4xl mb-2`}>🔒</Text>
-                <Text style={tw`font-semibold text-lg mb-2`}>Secure Payment</Text>
-                <Text style={tw`text-gray-600 text-center text-sm`}>
-                  Safe and encrypted transactions
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <Footer />
-      </ScrollView>
-    </View>
+      <View style={tw`h-6`} />
+    </ScrollView>
   );
 };
