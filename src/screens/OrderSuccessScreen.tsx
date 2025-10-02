@@ -54,7 +54,7 @@ export const OrderSuccessScreen: React.FC = () => {
 
         <View style={tw`w-full gap-3`}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('Main', { screen: 'HomeTab' })}
             style={tw`bg-yellow-600 py-4 rounded-xl`}
             accessibilityLabel="Continue shopping"
             accessibilityRole="button"
@@ -65,7 +65,7 @@ export const OrderSuccessScreen: React.FC = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('ProfileTab')}
+            onPress={() => navigation.navigate('Main', { screen: 'ProfileTab' })}
             style={tw`bg-gray-100 py-4 rounded-xl`}
             accessibilityLabel="View profile"
             accessibilityRole="button"

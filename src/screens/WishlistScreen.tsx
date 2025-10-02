@@ -32,7 +32,7 @@ export const WishlistScreen: React.FC = () => {
           Start adding watches you love to your wishlist
         </Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate('CatalogTab')}
+          onPress={() => navigation.navigate('Main', { screen: 'CatalogTab' })}
           style={tw`bg-yellow-600 py-3.5 px-12 rounded-xl`}
           accessibilityLabel="Browse catalog"
           accessibilityRole="button"

@@ -63,7 +63,7 @@ export const ProfileScreen: React.FC = () => {
             <Text style={tw`text-gray-400`}>→</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate('CartTab')}
+            onPress={() => navigation.navigate('Main', { screen: 'CartTab' })}
             style={tw`flex-row items-center px-4 py-4 border-b border-gray-100`}
             accessibilityLabel="View cart"
             accessibilityRole="button"
@@ -73,7 +73,7 @@ export const ProfileScreen: React.FC = () => {
             <Text style={tw`text-gray-400`}>→</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate('CatalogTab')}
+            onPress={() => navigation.navigate('Main', { screen: 'CatalogTab' })}
             style={tw`flex-row items-center px-4 py-4`}
             accessibilityLabel="Browse catalog"
             accessibilityRole="button"

@@ -18,11 +18,11 @@ export const AuthScreen: React.FC = () => {
       if (isLoginMode) {
         await login(email, password);
         Alert.alert('Success', 'Logged in successfully!');
-        navigation.navigate('Home');
+        navigation.navigate('Main', { screen: 'HomeTab' });
       } else {
         await register(email, password, name);
         Alert.alert('Success', 'Account created successfully!');
-        navigation.navigate('Home');
+        navigation.navigate('Main', { screen: 'HomeTab' });
       }
     } catch (error) {
       Alert.alert('Error', 'Authentication failed. Please try again.');

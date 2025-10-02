@@ -24,7 +24,7 @@ export const Header: React.FC<HeaderProps> = ({
     <View style={tw`bg-white border-b border-gray-200`}>
       <View style={tw`px-4 py-3 flex-row items-center justify-between max-w-7xl mx-auto w-full`}>
         <TouchableOpacity 
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('Main', { screen: 'HomeTab' })}
           accessibilityLabel="Go to home"
           accessibilityRole="button"
         >
@@ -43,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
           )}
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('Catalog')}
+            onPress={() => navigation.navigate('Main', { screen: 'CatalogTab' })}
             style={tw`px-3 py-2`}
             accessibilityLabel="Browse catalog"
             accessibilityRole="button"
@@ -53,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {isAuthenticated ? (
             <TouchableOpacity
-              onPress={() => navigation.navigate('Profile')}
+              onPress={() => navigation.navigate('Main', { screen: 'ProfileTab' })}
               style={tw`px-3 py-2`}
               accessibilityLabel={`Profile: ${user?.name}`}
               accessibilityRole="button"
@@ -74,7 +74,7 @@ export const Header: React.FC<HeaderProps> = ({
           )}
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('Cart')}
+            onPress={() => navigation.navigate('Main', { screen: 'CartTab' })}
             style={tw`relative px-3 py-2`}
             accessibilityLabel={`Shopping cart with ${itemCount} items`}
             accessibilityRole="button"
