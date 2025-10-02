@@ -6,7 +6,12 @@ Timeless Watch Shop is a cross-platform luxury watch e-commerce application buil
 
 The application emphasizes performance, accessibility, and user experience with progressive image loading, offline support through caching, and internationalization capabilities. It uses a modern tech stack with React 19, React Query for server state management and Zustand for client-side state, ensuring efficient data handling and optimal performance across all platforms.
 
-**Recent Update (Oct 2025)**: Upgraded to Expo SDK 54 with React 19.1.0 and React Native 0.81. Redesigned entire UI from web-style to mobile-native with bottom tab navigation, full-width components, and platform-specific styling.
+**Recent Update (Oct 2, 2025)**: 
+- Upgraded to Expo SDK 54 with React 19.1.0 and React Native 0.81
+- Redesigned entire UI from web-style to mobile-native with bottom tab navigation, full-width components, and platform-specific styling
+- Implemented Wishlist feature with heart icon toggle on product cards (Zustand store)
+- Added Recently Viewed products tracking and display section (Zustand store)
+- Enhanced homepage with 10 comprehensive features including search, banners, filters, reviews, newsletter, wishlist, and recently viewed
 
 ## User Preferences
 
