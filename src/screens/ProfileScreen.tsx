@@ -10,7 +10,6 @@ export const ProfileScreen: React.FC = () => {
 
   const handleLogout = async () => {
     await logout();
-    navigation.navigate('HomeTab');
   };
 
   if (!isAuthenticated) {

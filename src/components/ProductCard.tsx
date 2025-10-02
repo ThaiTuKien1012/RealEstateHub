@@ -24,9 +24,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       style={[
         tw`bg-white rounded-2xl overflow-hidden`,
         Platform.select({
-          ios: tw`shadow-lg`,
+          ios: {
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          },
           android: { elevation: 4 },
-          web: tw`shadow-md`,
+          web: {
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+          },
         }),
       ]}
       onPress={() => navigation.navigate('ProductDetail', { id: product.id })}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeScreen, CatalogScreen, CartScreen, ProfileScreen } from '../screens';
 import { useCart } from '../hooks/useCart';
@@ -35,7 +36,7 @@ export const BottomTabNavigator: React.FC = () => {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
-            <span style={{ fontSize: 24 }}>🏠</span>
+            <Text style={{ fontSize: 24 }}>🏠</Text>
           ),
         }}
       />
@@ -45,7 +46,7 @@ export const BottomTabNavigator: React.FC = () => {
         options={{
           tabBarLabel: 'Shop',
           tabBarIcon: ({ color }) => (
-            <span style={{ fontSize: 24 }}>🔍</span>
+            <Text style={{ fontSize: 24 }}>🔍</Text>
           ),
         }}
       />
@@ -56,7 +57,7 @@ export const BottomTabNavigator: React.FC = () => {
           tabBarLabel: 'Cart',
           tabBarBadge: itemCount > 0 ? itemCount : undefined,
           tabBarIcon: ({ color }) => (
-            <span style={{ fontSize: 24 }}>🛒</span>
+            <Text style={{ fontSize: 24 }}>🛒</Text>
           ),
         }}
       />
@@ -66,7 +67,7 @@ export const BottomTabNavigator: React.FC = () => {
         options={{
           tabBarLabel: isAuthenticated ? 'Profile' : 'Login',
           tabBarIcon: ({ color }) => (
-            <span style={{ fontSize: 24 }}>{isAuthenticated ? '👤' : '🔐'}</span>
+            <Text style={{ fontSize: 24 }}>{isAuthenticated ? '👤' : '🔐'}</Text>
           ),
         }}
       />

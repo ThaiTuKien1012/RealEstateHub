@@ -2,25 +2,27 @@
 
 ## Overview
 
-Timeless Watch Shop is a cross-platform luxury watch e-commerce application built with React Native (Expo) and TypeScript. The application runs on iOS, Android, and web platforms, providing a seamless shopping experience for luxury watch enthusiasts. It features a complete product catalog with advanced filtering, shopping cart functionality, and a mock checkout flow.
+Timeless Watch Shop is a cross-platform luxury watch e-commerce application built with React Native (Expo SDK 54) and TypeScript. The application runs on iOS, Android, and web platforms, providing a seamless shopping experience for luxury watch enthusiasts. It features a complete product catalog with advanced filtering, shopping cart functionality, and a mock checkout flow.
 
-The application emphasizes performance, accessibility, and user experience with progressive image loading, offline support through caching, and internationalization capabilities. It uses a modern tech stack with React Query for server state management and Zustand for client-side state, ensuring efficient data handling and optimal performance across all platforms.
+The application emphasizes performance, accessibility, and user experience with progressive image loading, offline support through caching, and internationalization capabilities. It uses a modern tech stack with React 19, React Query for server state management and Zustand for client-side state, ensuring efficient data handling and optimal performance across all platforms.
+
+**Recent Update (Oct 2025)**: Upgraded to Expo SDK 54 with React 19.1.0 and React Native 0.81. Redesigned entire UI from web-style to mobile-native with bottom tab navigation, full-width components, and platform-specific styling.
 
 ## User Preferences
 
-Preferred communication style: Simple, everyday language.
+Preferred communication style: Simple, everyday language (Vietnamese preferred).
 
 ## System Architecture
 
 ### Frontend Architecture
 
-**Framework & Platform**: Built on Expo SDK 52 with React Native, enabling true cross-platform development for iOS, Android, and web from a single codebase. The web build uses Metro bundler and is configured as a Progressive Web App (PWA) with manifest and service worker support.
+**Framework & Platform**: Built on Expo SDK 54 with React Native 0.81, enabling true cross-platform development for iOS, Android, and web from a single codebase. The web build uses Metro bundler and is configured as a Progressive Web App (PWA) with manifest and service worker support.
 
-**Component Architecture**: Follows a component-based architecture with reusable UI components (`Header`, `Footer`, `ProductCard`, `ProductGallery`, `FilterPanel`) that are platform-agnostic. Components are organized by feature and responsibility, with a clear separation between presentational and container components.
+**Component Architecture**: Follows a mobile-native component architecture with reusable UI components (`ProductCard`, `ProductGallery`, `FilterPanel`) designed for touch interactions. Components use platform-specific styling (boxShadow for iOS/web, elevation for Android) and are optimized for mobile-first experience. Removed web-style Header/Footer components in favor of native navigation patterns.
 
-**Navigation**: Uses React Navigation v7 with native stack navigator for optimal performance. Navigation structure is flat with screen-based routing (Home, Catalog, ProductDetail, Cart, Checkout, Auth, Profile) without nested navigators, simplifying state management and transitions. Profile screen provides user account information and logout functionality.
+**Navigation**: Uses React Navigation v7 with **bottom tab navigator** (iOS/Android standard) as primary navigation. Tab structure includes: Home, Shop (Catalog), Cart, and Profile/Login. Stack navigator handles detail views (ProductDetail, Checkout, Auth) with native header styling. Navigation is optimized for thumb-friendly mobile interaction.
 
-**Styling**: Implements utility-first styling with `twrnc` (Tailwind for React Native), providing consistent design tokens across platforms while maintaining native performance. The styling approach is mobile-first with responsive breakpoints defined in constants.
+**Styling**: Implements utility-first styling with `twrnc` (Tailwind for React Native), fully mobile-native with rounded corners (rounded-2xl), proper touch targets (min 44pt), and platform-specific shadows. No max-width containers - all components are full-width for native mobile feel. Uses boxShadow (not deprecated shadow* props) for cross-platform compatibility.
 
 **Type Safety**: Fully typed with TypeScript in strict mode, with comprehensive type definitions for products, cart items, API responses, filters, and component props. Uses path aliases (`@components`, `@screens`, etc.) via Babel module resolver for cleaner imports.
 
@@ -69,10 +71,10 @@ Preferred communication style: Simple, everyday language.
 ## External Dependencies
 
 ### Core Framework
-- **Expo SDK 52**: Complete development platform providing native modules, build tools, and cross-platform APIs without ejecting from managed workflow
-- **React Native 0.76.5**: Core framework for building native apps with React
-- **React 18.3.1**: UI library with concurrent features and automatic batching
-- **React DOM 18.3.1**: Web rendering for Expo web builds
+- **Expo SDK 54**: Latest development platform providing native modules, build tools, and cross-platform APIs without ejecting from managed workflow
+- **React Native 0.81.0**: Core framework for building native apps with React (upgraded Oct 2025)
+- **React 19.1.0**: Latest UI library with improved concurrent features and automatic batching (upgraded Oct 2025)
+- **React DOM 19.1.0**: Web rendering for Expo web builds (upgraded Oct 2025)
 - **React Native Web 0.19.13**: React Native primitives mapped to web standards
 
 ### Navigation & Routing
