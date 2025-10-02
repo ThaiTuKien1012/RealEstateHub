@@ -4,11 +4,11 @@ import { BottomTabNavigator } from './BottomTabNavigator';
 import { AdminBottomTabNavigator } from './AdminBottomTabNavigator';
 
 export const MainNavigator: React.FC = () => {
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   if (user?.role === 'admin') {
-    return <AdminBottomTabNavigator />;
+    return <AdminBottomTabNavigator key="admin" />;
   }
 
-  return <BottomTabNavigator />;
+  return <BottomTabNavigator key={isAuthenticated ? 'customer' : 'guest'} />;
 };

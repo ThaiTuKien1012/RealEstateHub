@@ -19,10 +19,6 @@ export const AdminSettingsScreen: React.FC = () => {
           style: 'destructive',
           onPress: async () => {
             await logout();
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Main' }],
-            });
           },
         },
       ]
