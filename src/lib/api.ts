@@ -54,34 +54,22 @@ api.interceptors.response.use(
 export const productsApi = {
   getAll: async (): Promise<ApiResponse<Product[]>> => {
     const response = await api.get('/watches');
-    return {
-      success: true,
-      data: response.data,
-    };
+    return response.data;
   },
 
   getById: async (id: string): Promise<ApiResponse<Product>> => {
     const response = await api.get(`/watches/${id}`);
-    return {
-      success: true,
-      data: response.data,
-    };
+    return response.data;
   },
 
   getFeatured: async (): Promise<ApiResponse<Product[]>> => {
     const response = await api.get('/watches/featured');
-    return {
-      success: true,
-      data: response.data,
-    };
+    return response.data;
   },
 
   getBestSellers: async (): Promise<ApiResponse<Product[]>> => {
-    const response = await api.get('/watches/bestsellers');
-    return {
-      success: true,
-      data: response.data,
-    };
+    const response = await api.get('/watches/best-sellers');
+    return response.data;
   },
 
   search: async (
@@ -187,17 +175,17 @@ export const cartApi = {
   },
 
   addItem: async (productId: string, quantity: number = 1, variantId?: string) => {
-    const response = await api.post('/cart/items', { productId, quantity, variantId });
-    return { success: true, data: response.data };
+    const response = await api.post('/cart', { watchId: productId, quantity, variantId });
+    return response.data;
   },
 
   updateItem: async (itemId: string, quantity: number) => {
-    const response = await api.put(`/cart/items/${itemId}`, { quantity });
-    return { success: true, data: response.data };
+    const response = await api.put(`/cart/${itemId}`, { quantity });
+    return response.data;
   },
 
   removeItem: async (itemId: string) => {
-    await api.delete(`/cart/items/${itemId}`);
+    await api.delete(`/cart/${itemId}`);
     return { success: true };
   },
 
@@ -224,8 +212,8 @@ export const ordersApi = {
   },
 
   updateOrderStatus: async (orderId: string, status: string) => {
-    const response = await api.patch(`/orders/${orderId}/status`, { status });
-    return { success: true, data: response.data };
+    const response = await api.put(`/orders/${orderId}/status`, { status });
+    return response.data;
   },
 };
 
@@ -236,12 +224,12 @@ export const wishlistApi = {
   },
 
   addItem: async (productId: string) => {
-    const response = await api.post('/wishlist/items', { productId });
-    return { success: true, data: response.data };
+    const response = await api.post('/wishlist', { watchId: productId });
+    return response.data;
   },
 
   removeItem: async (productId: string) => {
-    await api.delete(`/wishlist/items/${productId}`);
+    await api.delete(`/wishlist/${productId}`);
     return { success: true };
   },
 };

@@ -58,18 +58,24 @@ Preferred communication style: Simple, everyday language (Vietnamese preferred).
 
 ### API & Data Layer
 
-**Backend Integration (Oct 2, 2025)**: Fully integrated with Railway-hosted backend API at `https://beecommercewatchstore-production.up.railway.app/api`. All API calls directly connect to live backend with no mock data. Axios client configured with JWT authentication interceptors that automatically attach tokens to all requests and handle 401 unauthorized responses.
+**Backend Integration (Oct 2, 2025)**: Custom backend API hosted on Replit using Node.js + Express + PostgreSQL with Drizzle ORM. Located in `/backend` folder. Replaced Railway API due to admin access limitations. All API calls connect to local backend at `http://localhost:3000/api` with no mock data. Axios client configured with JWT authentication interceptors that automatically attach tokens to all requests and handle 401 unauthorized responses.
 
 **API Modules**: 
-- **Auth API**: Login, register, logout with JWT token management
+- **Auth API**: Login, register, logout with JWT token management (firstName/lastName required)
 - **Products/Watches API**: Get all products, search with filters, featured items, best sellers, individual product details
 - **Cart API**: Full cart management (get, add, update, remove, clear items)
-- **Orders API**: Create orders, list with pagination, get order details, update order status
+- **Orders API**: Create orders, list with pagination, get order details, update order status (admin only)
 - **Wishlist API**: Get wishlist, add/remove items
-- **Reviews API**: Get product reviews, create new reviews
-- **Admin API**: Users management (CRUD), Stores management (CRUD), Support tickets and messaging
+- **Admin API**: Users management (CRUD with admin role enforcement)
 
-**Data Structure**: Products include complete specifications (images, variants, reviews, pricing, materials). All API responses use standardized `ApiResponse` types for consistent error handling. Backend provides 8 complete modules for e-commerce operations.
+**Backend Structure**:
+- **Location**: `/backend` folder with Node.js + Express
+- **Database**: PostgreSQL with Drizzle ORM, schema in `/backend/src/models/schema.js`
+- **Seeding**: Auto-seeds 50 luxury watches from 6 brands (Rolex, Omega, Patek Philippe, Tudor, Cartier, Tag Heuer) + admin user
+- **Admin Credentials**: email `admin@watchshop.com`, password `Admin123!@#`
+- **Security**: JWT authentication, CORS enabled, bcrypt password hashing
+
+**Data Structure**: Products include complete specifications (images, variants, pricing, materials). All API responses use standardized `{success: boolean, data: T}` format for consistent error handling.
 
 **Caching Strategy**: React Query provides multi-level caching with configurable stale times. Products remain fresh for 5 minutes, featured products for 10 minutes, and search results for 2 minutes. Placeholder data prevents UI flashing during refetches.
 
