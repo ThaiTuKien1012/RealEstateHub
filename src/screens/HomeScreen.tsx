@@ -76,8 +76,14 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <ScrollView style={tw`flex-1 bg-white`}>
+      {/* Logo */}
+      <View style={tw`bg-white px-4 pt-12 pb-3 items-center`}>
+        <Text style={tw`text-3xl font-bold text-gray-900 tracking-wider`}>TIMELESS</Text>
+        <Text style={tw`text-xs text-gray-500 mt-1 tracking-widest uppercase`}>Luxury Watches</Text>
+      </View>
+
       {/* Search Bar */}
-      <View style={tw`bg-white px-4 pt-12 pb-4 border-b border-gray-200`}>
+      <View style={tw`bg-white px-4 pb-4 border-b border-gray-200`}>
         <View style={tw`flex-row items-center bg-gray-100 rounded-xl px-4 py-3`}>
           <Text style={tw`text-gray-400 text-lg mr-2`}>🔍</Text>
           <TextInput
