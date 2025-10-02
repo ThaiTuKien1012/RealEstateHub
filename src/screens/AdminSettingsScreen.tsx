@@ -9,20 +9,12 @@ export const AdminSettingsScreen: React.FC = () => {
   const { user, logout } = useAuth();
 
   const handleLogout = async () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Logout',
-          style: 'destructive',
-          onPress: async () => {
-            await logout();
-          },
-        },
-      ]
-    );
+    try {
+      await logout();
+      console.log('Admin logout completed');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   const adminMenuItems = [
