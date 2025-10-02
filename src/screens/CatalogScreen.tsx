@@ -10,11 +10,13 @@ import {
   TextInput,
 } from 'react-native';
 import tw from 'twrnc';
-import { ProductCard, FilterPanel } from '../components';
+import { ProductCard, ProductListItem, FilterPanel, QuickViewModal } from '../components';
 import { useProductSearch } from '../hooks/useProducts';
 import { useDebounce } from '../hooks/useDebounce';
 import { Filter } from '../types';
 import { FILTERS_DEFAULT, SORT_OPTIONS } from '../constants';
+
+type ViewMode = 'grid' | 'list';
 
 export const CatalogScreen: React.FC = () => {
   const [filters, setFilters] = useState<Partial<Filter>>(FILTERS_DEFAULT);
@@ -22,6 +24,8 @@ export const CatalogScreen: React.FC = () => {
   const [page, setPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<string>('newest');
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [quickViewProductId, setQuickViewProductId] = useState<string | null>(null);
 
   const debouncedSearch = useDebounce(searchQuery, 500);
 
@@ -80,23 +84,50 @@ export const CatalogScreen: React.FC = () => {
         />
       </View>
 
-      {/* Filters - Mobile */}
-      <View style={tw`flex-row px-4 py-3 gap-3`}>
-        <TouchableOpacity
-          onPress={() => setShowFilters(true)}
-          style={tw`flex-row items-center justify-center px-5 py-2.5 bg-gray-900 rounded-xl flex-1`}
-          accessibilityLabel={`Open filters. ${activeFilterCount} filters active`}
-          accessibilityRole="button"
-        >
-          <Text style={tw`text-white font-medium mr-2`}>🎛️ Filter</Text>
-          {activeFilterCount > 0 && (
-            <View style={tw`bg-yellow-600 rounded-full w-5 h-5 items-center justify-center`}>
-              <Text style={tw`text-white text-xs font-bold`}>{activeFilterCount}</Text>
-            </View>
-          )}
-        </TouchableOpacity>
+      {/* Filters & View Mode - Mobile */}
+      <View style={tw`px-4 py-3 gap-3`}>
+        <View style={tw`flex-row gap-3`}>
+          <TouchableOpacity
+            onPress={() => setShowFilters(true)}
+            style={tw`flex-row items-center justify-center px-5 py-2.5 bg-gray-900 rounded-xl flex-1`}
+            accessibilityLabel={`Open filters. ${activeFilterCount} filters active`}
+            accessibilityRole="button"
+          >
+            <Text style={tw`text-white font-medium mr-2`}>⚙ Filter</Text>
+            {activeFilterCount > 0 && (
+              <View style={tw`bg-yellow-600 rounded-full w-5 h-5 items-center justify-center`}>
+                <Text style={tw`text-white text-xs font-bold`}>{activeFilterCount}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={tw`flex-1`}>
+          <View style={tw`flex-row bg-gray-100 rounded-xl p-1 gap-1`}>
+            <TouchableOpacity
+              onPress={() => setViewMode('grid')}
+              style={[
+                tw`px-3 py-2 rounded-lg`,
+                viewMode === 'grid' ? tw`bg-white` : tw``,
+              ]}
+              accessibilityLabel="Grid view"
+              accessibilityRole="button"
+            >
+              <Text style={tw`text-base`}>⊞</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setViewMode('list')}
+              style={[
+                tw`px-3 py-2 rounded-lg`,
+                viewMode === 'list' ? tw`bg-white` : tw``,
+              ]}
+              accessibilityLabel="List view"
+              accessibilityRole="button"
+            >
+              <Text style={tw`text-base`}>☰</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {SORT_OPTIONS.slice(0, 3).map(option => (
             <TouchableOpacity
               key={option.value}
@@ -134,26 +165,44 @@ export const CatalogScreen: React.FC = () => {
           <ActivityIndicator size="large" color="#d4af37" style={tw`mt-12`} />
         ) : (
           <>
-            <FlatList
-              data={sortedProducts}
-              numColumns={2}
-              key="catalog-grid"
-              scrollEnabled={false}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <View style={tw`w-1/2 px-2 mb-3`}>
-                  <ProductCard product={item} />
-                </View>
-              )}
-              contentContainerStyle={tw`px-2`}
-              ListEmptyComponent={
-                <View style={tw`py-16 px-4`}>
-                  <Text style={tw`text-gray-500 text-center text-base`}>
-                    No watches found
-                  </Text>
-                </View>
-              }
-            />
+            {viewMode === 'grid' ? (
+              <FlatList
+                data={sortedProducts}
+                numColumns={2}
+                key="catalog-grid"
+                scrollEnabled={false}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <View style={tw`w-1/2 px-2 mb-3`}>
+                    <ProductCard product={item} onQuickView={setQuickViewProductId} />
+                  </View>
+                )}
+                contentContainerStyle={tw`px-2`}
+                ListEmptyComponent={
+                  <View style={tw`py-16 px-4`}>
+                    <Text style={tw`text-gray-500 text-center text-base`}>
+                      No watches found
+                    </Text>
+                  </View>
+                }
+              />
+            ) : (
+              <FlatList
+                data={sortedProducts}
+                key="catalog-list"
+                scrollEnabled={false}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => <ProductListItem product={item} onQuickView={setQuickViewProductId} />}
+                contentContainerStyle={tw`px-4`}
+                ListEmptyComponent={
+                  <View style={tw`py-16 px-4`}>
+                    <Text style={tw`text-gray-500 text-center text-base`}>
+                      No watches found
+                    </Text>
+                  </View>
+                }
+              />
+            )}
 
             {data && data.totalPages > 1 && (
               <View style={tw`flex-row justify-center gap-3 my-6 px-4`}>
@@ -202,6 +251,12 @@ export const CatalogScreen: React.FC = () => {
           onClose={() => setShowFilters(false)}
         />
       </Modal>
+
+      <QuickViewModal
+        visible={!!quickViewProductId}
+        productId={quickViewProductId}
+        onClose={() => setQuickViewProductId(null)}
+      />
     </View>
   );
 };

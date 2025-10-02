@@ -5,12 +5,12 @@ import tw from 'twrnc';
 import { Product } from '../types';
 import { useWishlist } from '../hooks/useWishlist';
 
-interface ProductCardProps {
+interface ProductListItemProps {
   product: Product;
   onQuickView?: (productId: string) => void;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }) => {
+export const ProductListItem: React.FC<ProductListItemProps> = ({ product, onQuickView }) => {
   const navigation = useNavigation<any>();
   const { addItem, removeItem, isInWishlist } = useWishlist();
   const inWishlist = isInWishlist(product.id);
@@ -35,7 +35,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
   return (
     <View
       style={[
-        tw`bg-white rounded-2xl overflow-hidden`,
+        tw`bg-white rounded-2xl overflow-hidden mb-3`,
         Platform.select({
           ios: {
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
@@ -48,63 +48,73 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
       ]}
     >
       <TouchableOpacity
+        style={tw`flex-row`}
         onPress={() => navigation.navigate('ProductDetail', { id: product.id })}
         accessibilityLabel={`View ${product.name} by ${product.brand}`}
         accessibilityRole="button"
         activeOpacity={0.7}
       >
-        <View style={tw`aspect-square bg-gray-100 relative`}>
+        <View style={tw`w-32 h-32 bg-gray-100 relative`}>
           <Image
             source={{ uri: product.images[0] }}
             style={tw`w-full h-full`}
             resizeMode="cover"
             accessibilityLabel={product.name}
           />
-          <TouchableOpacity
-            onPress={handleWishlistToggle}
-            style={tw`absolute top-3 right-3 bg-white w-9 h-9 rounded-full items-center justify-center`}
-          >
-            <Text style={tw`text-xl`}>{inWishlist ? '❤️' : '🤍'}</Text>
-          </TouchableOpacity>
           {product.isBestSeller && (
-            <View style={tw`absolute top-3 left-3 bg-yellow-600 px-2.5 py-1.5 rounded-full`}>
-              <Text style={tw`text-white text-xs font-bold`}>★ Best</Text>
+            <View style={tw`absolute top-2 left-2 bg-yellow-600 px-2 py-1 rounded-full`}>
+              <Text style={tw`text-white text-xs font-bold`}>★</Text>
             </View>
           )}
           {product.originalPrice && (
-            <View style={tw`absolute bottom-3 left-3 bg-red-500 px-2.5 py-1.5 rounded-full`}>
+            <View style={tw`absolute bottom-2 left-2 bg-red-500 px-2 py-1 rounded-full`}>
               <Text style={tw`text-white text-xs font-bold`}>Sale</Text>
             </View>
           )}
         </View>
 
-        <View style={tw`p-3.5`}>
-          <Text style={tw`text-gray-500 text-xs uppercase tracking-wider mb-1`}>
-            {product.brand}
-          </Text>
-          <Text 
-            style={tw`text-gray-900 font-semibold text-sm mb-2.5`}
-            numberOfLines={2}
-          >
-            {product.name}
-          </Text>
+        <View style={tw`flex-1 p-4 justify-between`}>
+          <View>
+            <Text style={tw`text-gray-500 text-xs uppercase tracking-wider mb-1`}>
+              {product.brand}
+            </Text>
+            <Text 
+              style={tw`text-gray-900 font-semibold text-base mb-2`}
+              numberOfLines={2}
+            >
+              {product.name}
+            </Text>
 
-          <View style={tw`flex-row items-center mb-2`}>
-            <Text style={tw`text-yellow-500 text-base`}>★</Text>
-            <Text style={tw`text-gray-600 text-xs ml-1`}>
-              {product.rating} • {product.reviewCount} reviews
+            <View style={tw`flex-row items-center mb-2`}>
+              <Text style={tw`text-yellow-500 text-sm`}>★</Text>
+              <Text style={tw`text-gray-600 text-xs ml-1`}>
+                {product.rating} • {product.reviewCount} reviews
+              </Text>
+            </View>
+
+            <Text style={tw`text-gray-600 text-xs mb-2`} numberOfLines={2}>
+              {product.movement} • {product.caseMaterial}
             </Text>
           </View>
 
-          <View style={tw`flex-row items-center gap-2`}>
-            {product.originalPrice && (
-              <Text style={tw`text-gray-400 line-through text-xs`}>
-                {formatPrice(product.originalPrice)}
+          <View style={tw`flex-row items-center justify-between`}>
+            <View style={tw`flex-row items-center gap-2`}>
+              {product.originalPrice && (
+                <Text style={tw`text-gray-400 line-through text-xs`}>
+                  {formatPrice(product.originalPrice)}
+                </Text>
+              )}
+              <Text style={tw`text-gray-900 font-bold text-lg`}>
+                {formatPrice(product.price)}
               </Text>
-            )}
-            <Text style={tw`text-gray-900 font-bold text-base`}>
-              {formatPrice(product.price)}
-            </Text>
+            </View>
+
+            <TouchableOpacity
+              onPress={handleWishlistToggle}
+              style={tw`bg-gray-100 w-9 h-9 rounded-full items-center justify-center`}
+            >
+              <Text style={tw`text-lg`}>{inWishlist ? '❤️' : '🤍'}</Text>
+            </TouchableOpacity>
           </View>
 
           {product.stock < 5 && product.stock > 0 && (
@@ -121,7 +131,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
       {onQuickView && (
         <TouchableOpacity
           onPress={() => onQuickView(product.id)}
-          style={tw`mx-3.5 mb-3.5 bg-gray-900 py-2.5 rounded-xl items-center justify-center`}
+          style={tw`mx-4 mb-4 bg-gray-900 py-2 rounded-lg items-center justify-center`}
           accessibilityLabel="Quick view"
           accessibilityRole="button"
         >
