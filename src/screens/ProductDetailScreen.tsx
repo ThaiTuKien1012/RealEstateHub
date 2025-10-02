@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import tw from 'twrnc';
 import { Header, Footer, ProductGallery } from '../components';
 import { useProduct } from '../hooks/useProducts';
 import { useCart } from '../hooks/useCart';
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { ProductVariant } from '../types';
 
 export const ProductDetailScreen: React.FC = () => {
@@ -21,6 +22,13 @@ export const ProductDetailScreen: React.FC = () => {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | undefined>();
   const [quantity, setQuantity] = useState(1);
   const addItem = useCart(state => state.addItem);
+  const addToRecentlyViewed = useRecentlyViewed(state => state.addItem);
+
+  useEffect(() => {
+    if (data?.data) {
+      addToRecentlyViewed(data.data);
+    }
+  }, [data, addToRecentlyViewed]);
 
   if (isLoading) {
     return (

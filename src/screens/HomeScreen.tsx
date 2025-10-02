@@ -4,14 +4,15 @@ import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
 import { ProductCard } from '../components';
 import { useFeaturedProducts, useBestSellers } from '../hooks/useProducts';
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 
 const brands = [
-  { id: '1', name: 'Rolex', icon: '👑' },
-  { id: '2', name: 'Omega', icon: '🌊' },
-  { id: '3', name: 'Patek Philippe', icon: '💎' },
-  { id: '4', name: 'Tudor', icon: '⚔️' },
-  { id: '5', name: 'Cartier', icon: '💍' },
-  { id: '6', name: 'Tag Heuer', icon: '🏁' },
+  { id: '1', name: 'Rolex' },
+  { id: '2', name: 'Omega' },
+  { id: '3', name: 'Patek Philippe' },
+  { id: '4', name: 'Tudor' },
+  { id: '5', name: 'Cartier' },
+  { id: '6', name: 'Tag Heuer' },
 ];
 
 const priceRanges = [
@@ -37,6 +38,7 @@ export const HomeScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const { data: featuredData, isLoading: featuredLoading } = useFeaturedProducts();
   const { data: bestSellersData, isLoading: bestSellersLoading } = useBestSellers();
+  const recentlyViewed = useRecentlyViewed(state => state.items);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentBanner, setCurrentBanner] = useState(0);
   const [email, setEmail] = useState('');
@@ -124,9 +126,8 @@ export const HomeScreen: React.FC = () => {
             <TouchableOpacity
               key={brand.id}
               onPress={() => handleBrandFilter(brand.name)}
-              style={tw`bg-gray-100 px-4 py-2 rounded-full flex-row items-center`}
+              style={tw`bg-gray-100 px-4 py-2 rounded-full`}
             >
-              <Text style={tw`mr-2`}>{brand.icon}</Text>
               <Text style={tw`font-medium`}>{brand.name}</Text>
             </TouchableOpacity>
           ))}
@@ -247,6 +248,29 @@ export const HomeScreen: React.FC = () => {
           />
         )}
       </View>
+
+      {/* Recently Viewed */}
+      {recentlyViewed.length > 0 && (
+        <View style={tw`py-6 bg-gray-50`}>
+          <View style={tw`px-4 mb-4`}>
+            <Text style={tw`text-2xl font-bold mb-1`}>Recently Viewed</Text>
+            <Text style={tw`text-gray-600 text-sm`}>Continue shopping</Text>
+          </View>
+
+          <FlatList
+            data={recentlyViewed}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View style={tw`w-64 ml-4 first:ml-4`}>
+                <ProductCard product={item} />
+              </View>
+            )}
+            contentContainerStyle={tw`pr-4`}
+          />
+        </View>
+      )}
 
       {/* Customer Reviews */}
       <View style={tw`py-8 bg-yellow-50`}>

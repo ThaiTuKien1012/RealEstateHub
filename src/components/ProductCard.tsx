@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
 import { Product } from '../types';
+import { useWishlist } from '../hooks/useWishlist';
 
 interface ProductCardProps {
   product: Product;
@@ -10,6 +11,8 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const navigation = useNavigation<any>();
+  const { addItem, removeItem, isInWishlist } = useWishlist();
+  const inWishlist = isInWishlist(product.id);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -17,6 +20,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       currency: 'USD',
       minimumFractionDigits: 0,
     }).format(price);
+  };
+
+  const handleWishlistToggle = (e: any) => {
+    e.stopPropagation();
+    if (inWishlist) {
+      removeItem(product.id);
+    } else {
+      addItem(product);
+    }
   };
 
   return (
@@ -45,13 +57,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           resizeMode="cover"
           accessibilityLabel={product.name}
         />
+        <TouchableOpacity
+          onPress={handleWishlistToggle}
+          style={tw`absolute top-3 right-3 bg-white w-9 h-9 rounded-full items-center justify-center`}
+        >
+          <Text style={tw`text-xl`}>{inWishlist ? '❤️' : '🤍'}</Text>
+        </TouchableOpacity>
         {product.isBestSeller && (
-          <View style={tw`absolute top-3 right-3 bg-yellow-600 px-2.5 py-1.5 rounded-full`}>
+          <View style={tw`absolute top-3 left-3 bg-yellow-600 px-2.5 py-1.5 rounded-full`}>
             <Text style={tw`text-white text-xs font-bold`}>★ Best</Text>
           </View>
         )}
         {product.originalPrice && (
-          <View style={tw`absolute top-3 left-3 bg-red-500 px-2.5 py-1.5 rounded-full`}>
+          <View style={tw`absolute bottom-3 left-3 bg-red-500 px-2.5 py-1.5 rounded-full`}>
             <Text style={tw`text-white text-xs font-bold`}>Sale</Text>
           </View>
         )}
