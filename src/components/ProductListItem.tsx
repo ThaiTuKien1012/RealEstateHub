@@ -27,6 +27,18 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product, onQui
     }).format(price);
   };
 
+  const getStockStatus = () => {
+    if (product.stock <= 0) {
+      return { label: '⭕ Out of Stock', color: 'bg-red-600', textColor: 'text-white' };
+    } else if (product.stock <= 5) {
+      return { label: `⚠️ Only ${product.stock} Left`, color: 'bg-orange-500', textColor: 'text-white' };
+    } else {
+      return { label: '✓ In Stock', color: 'bg-green-600', textColor: 'text-white' };
+    }
+  };
+
+  const stockStatus = getStockStatus();
+
   const handleWishlistToggle = (e: any) => {
     e.stopPropagation();
     if (inWishlist) {
@@ -111,7 +123,7 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product, onQui
             </Text>
           </View>
 
-          <View style={tw`flex-row items-center justify-between`}>
+          <View style={tw`flex-row items-center justify-between mb-2`}>
             <View style={tw`flex-row items-center gap-2`}>
               {product.originalPrice && (
                 <Text style={tw`text-gray-400 line-through text-xs`}>
@@ -131,14 +143,11 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product, onQui
             </TouchableOpacity>
           </View>
 
-          {product.stock < 5 && product.stock > 0 && (
-            <Text style={tw`text-orange-600 text-xs mt-2`}>
-              Only {product.stock} left
+          <View style={[tw`px-2 py-1 rounded-full self-start`, tw`${stockStatus.color}`]}>
+            <Text style={[tw`text-xs font-bold`, tw`${stockStatus.textColor}`]}>
+              {stockStatus.label}
             </Text>
-          )}
-          {product.stock === 0 && (
-            <Text style={tw`text-red-600 text-xs mt-2 font-medium`}>Out of stock</Text>
-          )}
+          </View>
         </View>
       </TouchableOpacity>
 
