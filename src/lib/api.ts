@@ -99,6 +99,27 @@ export const productsApi = {
 
     return response.data;
   },
+
+  create: async (productData: any) => {
+    const response = await api.post('/watches', productData);
+    return {
+      success: true,
+      data: response.data,
+    };
+  },
+
+  update: async (id: string, productData: any) => {
+    const response = await api.put(`/watches/${id}`, productData);
+    return {
+      success: true,
+      data: response.data,
+    };
+  },
+
+  delete: async (id: string) => {
+    await api.delete(`/watches/${id}`);
+    return { success: true };
+  },
 };
 
 export const reviewsApi = {
