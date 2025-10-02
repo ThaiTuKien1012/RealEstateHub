@@ -1,0 +1,54 @@
+Bạn là một kỹ sư frontend chuyên nghiệp. Hãy tạo một **ứng dụng frontend bán đồng hồ** sử dụng **React Native (Expo) + TypeScript**, chạy trên mobile (iOS/Android) và web (Expo for Web). Yêu cầu chi tiết:
+
+KIẾN TRÚC & STACK
+- Expo (SDK mới nhất), React Native, TypeScript.
+- State management: React Query cho data fetching + Zustand hoặc Redux Toolkit cho state cục bộ (giỏ hàng, filter UI).
+- Navigation: React Navigation.
+- UI: component-based, dùng Tailwind-like utility (twrnc) hoặc styled-components; tối ưu responsive.
+- HTTP client: axios, với mock API / JSON server (hoặc fake REST endpoints).
+- Hỗ trợ web: cấu hình để build PWA (manifest, service worker).
+- Testing: unit tests cho components (Jest + React Native Testing Library).
+- CI: GH Actions skeleton để build web và mobile.
+
+TÍNH NĂNG CHÍNH
+- Trang chủ: hero banner, featured collections, best-sellers.
+- Catalog / Brand Page: danh sách đồng hồ (grid/list), pagination hoặc infinite scroll.
+- Lọc & Sắp xếp: theo thương hiệu, khoảng giá, loại chuyển động (automatic/quartz), đường kính, chất liệu, màu.
+- Chi tiết sản phẩm: carousel ảnh, variants (size, strap), thông số kỹ thuật, mô tả SEO-friendly, reviews (mock), CTA: Add to Cart, Buy Now.
+- Giỏ hàng & Checkout: modal cart + trang checkout giả lập (checkout steps), hợp tác với mock payment.
+- Auth cơ bản: đăng nhập/đăng ký bằng email (mock).
+- Offline / Cache: caching sản phẩm với React Query, fallback UI.
+- Analytics & tracking: event hooks (GA4 / Amplitude) (chỉ tích hợp placeholder).
+- Accessibility: semantic labels, keyboard focus, high-contrast theme.
+- Internationalization: sẵn sàng đa ngôn ngữ (i18n).
+
+CẢI TIẾN ƯU TIÊN SO VỚI TRANG GỐC
+1. **Tối ưu UX lọc**: filters chạy client-side, hỗ trợ debounced search + “save filter” cho user.
+2. **React Query + AJAX**: listing cập nhật không reload toàn trang → trải nghiệm mượt mà.
+3. **Progressive image loading**: dùng WebP, lazy load, LQIP placeholder, hỗ trợ zoom sản phẩm.
+4. **PWA & Offline Mode**: catalog có thể cache để xem offline, hỗ trợ progressive web app.
+5. **Product Configurator**: preview biến thể (size/strap) + trạng thái tồn kho realtime.
+6. **Đánh giá & UGC**: người dùng có thể viết review, upload ảnh thật.
+7. **Accessibility (A11y)**: hỗ trợ screenreader, keyboard navigation, high-contrast theme.
+8. **Đa ngôn ngữ & đa tiền tệ**: i18n + đổi đơn vị tiền (VNĐ, USD, EUR).
+9. **Analytics & CRO**: gắn event hooks, hỗ trợ A/B testing cho CTA.
+10. **Bảo mật & hiệu năng**: Content Security Policy, audit Lighthouse, mã hóa dữ liệu nhạy cảm.
+11. **SEO web**: Server-side rendering hoặc prerender meta tags cho từng sản phẩm (React Helmet).
+12. **Testing & CI**: unit test + e2e test (Detox/Playwright), tích hợp CI/CD (GitHub Actions).
+
+YÊU CẦU KỸ THUẬT
+- Tập trung vào performance: lazy load images, placeholder, CDN-ready image URLs.
+- Image component: progressive loading + zoom on web.
+- Responsive grid, tối ưu mobile-first.
+- TypeScript types cho Product, Variant, CartItem, API responses.
+- Provide a README với run, build, test commands và folder structure.
+- Cung cấp ít nhất 5 reusable components: Header, Footer, ProductCard, ProductGallery, FilterPanel.
+- Provide sample mock data (10-20 products) và mock API routes.
+
+DELIVERABLES (files to generate)
+- package.json, tsconfig.json, app.json (expo).
+- src/screens: Home, Catalog, ProductDetail, Cart, Checkout, Auth.
+- src/components: Header, Footer, ProductCard, ProductGallery, FilterPanel, Pagination.
+- src/hooks: useProducts (React Query), useCart (Zustand), useAuth.
+- src/lib/api.ts (axios wrapper) + types.
+- README.md with setup + deploy instructions (Vercel cho web, Expo build cho mobile).
