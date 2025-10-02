@@ -12,6 +12,10 @@ The application emphasizes performance, accessibility, and user experience with 
 - Implemented Wishlist feature with heart icon toggle on product cards (Zustand store)
 - Added Recently Viewed products tracking and display section (Zustand store)
 - Enhanced homepage with 10 comprehensive features including search, banners, filters, reviews, newsletter, wishlist, and recently viewed
+- Added WishlistScreen for managing favorite products with add to cart functionality
+- Created OrderSuccessScreen for post-checkout confirmation
+- Enhanced ProfileScreen with wishlist access, settings sections, and account management options
+- Fixed all navigation to use proper nested navigation pattern for consistent routing
 
 ## User Preferences
 
@@ -25,7 +29,7 @@ Preferred communication style: Simple, everyday language (Vietnamese preferred).
 
 **Component Architecture**: Follows a mobile-native component architecture with reusable UI components (`ProductCard`, `ProductGallery`, `FilterPanel`) designed for touch interactions. Components use platform-specific styling (boxShadow for iOS/web, elevation for Android) and are optimized for mobile-first experience. Removed web-style Header/Footer components in favor of native navigation patterns.
 
-**Navigation**: Uses React Navigation v7 with **bottom tab navigator** (iOS/Android standard) as primary navigation. Tab structure includes: Home, Shop (Catalog), Cart, and Profile/Login. Stack navigator handles detail views (ProductDetail, Checkout, Auth) with native header styling. Navigation is optimized for thumb-friendly mobile interaction.
+**Navigation**: Uses React Navigation v7 with **bottom tab navigator** (iOS/Android standard) as primary navigation. Tab structure includes: Home, Shop (Catalog), Cart, and Profile/Login. Stack navigator handles detail views (ProductDetail, Checkout, Auth, Wishlist, OrderSuccess) with native header styling. All navigation uses proper nested navigation pattern (navigation.navigate('Main', { screen: '...' })) for consistent tab routing. Navigation is optimized for thumb-friendly mobile interaction.
 
 **Styling**: Implements utility-first styling with `twrnc` (Tailwind for React Native), fully mobile-native with rounded corners (rounded-2xl), proper touch targets (min 44pt), and platform-specific shadows. No max-width containers - all components are full-width for native mobile feel. Uses boxShadow (not deprecated shadow* props) for cross-platform compatibility.
 
