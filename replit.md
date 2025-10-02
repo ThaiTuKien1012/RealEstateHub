@@ -9,6 +9,8 @@ The application emphasizes performance, accessibility, and user experience with 
 **Recent Update (Oct 2, 2025)**: 
 - Upgraded to Expo SDK 54 with React 19.1.0 and React Native 0.81
 - Redesigned entire UI from web-style to mobile-native with bottom tab navigation, full-width components, and platform-specific styling
+- **Role-Based Navigation**: Dual navigation system automatically switches based on user role - Admin users see Dashboard/Orders/Users/Settings tabs, Customer users see Home/Shop/Cart/Profile tabs
+- **Complete Admin Panel**: 6 management screens (Dashboard, Products, Orders, Users, Stores, Support) with mobile-native UI
 - Implemented Wishlist feature with heart icon toggle on product cards (Zustand store)
 - Added Recently Viewed products tracking and display section (Zustand store)
 - Enhanced homepage with 10 comprehensive features including search, banners, filters, reviews, newsletter, wishlist, and recently viewed
@@ -39,7 +41,7 @@ Preferred communication style: Simple, everyday language (Vietnamese preferred).
 
 **Component Architecture**: Follows a mobile-native component architecture with reusable UI components (`ProductCard`, `ProductGallery`, `FilterPanel`) designed for touch interactions. Components use platform-specific styling (boxShadow for iOS/web, elevation for Android) and are optimized for mobile-first experience. Removed web-style Header/Footer components in favor of native navigation patterns.
 
-**Navigation**: Uses React Navigation v7 with **bottom tab navigator** (iOS/Android standard) as primary navigation. Tab structure includes: Home, Shop (Catalog), Cart, and Profile/Login. Stack navigator handles detail views (ProductDetail, Checkout, Auth, Wishlist, OrderSuccess) with native header styling. All navigation uses proper nested navigation pattern (navigation.navigate('Main', { screen: '...' })) for consistent tab routing. Navigation is optimized for thumb-friendly mobile interaction.
+**Navigation**: Uses React Navigation v7 with **role-based bottom tab navigation** - automatically switches between admin and customer views. **MainNavigator** checks user.role and renders AdminBottomTabNavigator for admins (Dashboard/Orders/Users/Settings tabs) or BottomTabNavigator for customers (Home/Shop/Cart/Profile tabs). Stack navigator handles detail views (ProductDetail, Checkout, Auth, Wishlist, OrderSuccess) with native header styling. All navigation uses proper nested navigation pattern (navigation.navigate('Main', { screen: '...' })) for consistent tab routing. AdminRouteGuard component protects all admin routes from unauthorized access. Navigation is optimized for thumb-friendly mobile interaction.
 
 **Styling**: Implements utility-first styling with `twrnc` (Tailwind for React Native), fully mobile-native with rounded corners (rounded-2xl), proper touch targets (min 44pt), and platform-specific shadows. No max-width containers - all components are full-width for native mobile feel. Uses boxShadow (not deprecated shadow* props) for cross-platform compatibility.
 
