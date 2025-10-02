@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
-import { Header } from '../components';
 import { useAuth } from '../hooks/useAuth';
 
 export const AuthScreen: React.FC = () => {
@@ -30,42 +29,49 @@ export const AuthScreen: React.FC = () => {
   };
 
   return (
-    <View style={tw`flex-1 bg-white`}>
-      <Header />
-      <View style={tw`flex-1 items-center justify-center px-4`}>
-        <View style={tw`w-full max-w-md`}>
-          <Text style={tw`text-3xl font-bold mb-8 text-center`}>
-            {isLoginMode ? 'Login' : 'Sign Up'}
+    <View style={tw`flex-1 bg-gray-50`}>
+      <ScrollView contentContainerStyle={tw`flex-grow`}>
+        <View style={tw`flex-1 items-center justify-center px-6 py-12`}>
+          <View style={tw`w-16 h-16 bg-yellow-600 rounded-full items-center justify-center mb-6`}>
+            <Text style={tw`text-3xl`}>🔐</Text>
+          </View>
+          
+          <Text style={tw`text-3xl font-bold mb-2 text-center`}>
+            {isLoginMode ? 'Welcome Back' : 'Create Account'}
+          </Text>
+          <Text style={tw`text-gray-600 mb-8 text-center`}>
+            {isLoginMode ? 'Sign in to continue' : 'Join our luxury watch community'}
           </Text>
 
-          {!isLoginMode && (
+          <View style={tw`w-full bg-white rounded-2xl p-6 mb-6`}>
+            {!isLoginMode && (
+              <TextInput
+                style={tw`bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 mb-4`}
+                placeholder="Full name"
+                value={name}
+                onChangeText={setName}
+                accessibilityLabel="Full name"
+              />
+            )}
+
             <TextInput
-              style={tw`border border-gray-300 rounded px-4 py-3 mb-4`}
-              placeholder="Full Name"
-              value={name}
-              onChangeText={setName}
-              accessibilityLabel="Full name"
+              style={tw`bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 mb-4`}
+              placeholder="Email address"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              accessibilityLabel="Email address"
             />
-          )}
 
-          <TextInput
-            style={tw`border border-gray-300 rounded px-4 py-3 mb-4`}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            accessibilityLabel="Email address"
-          />
-
-          <TextInput
-            style={tw`border border-gray-300 rounded px-4 py-3 mb-6`}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            accessibilityLabel="Password"
-          />
+            <TextInput
+              style={tw`bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 mb-6`}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              accessibilityLabel="Password"
+            />
 
           <TouchableOpacity
             onPress={handleSubmit}
@@ -91,7 +97,8 @@ export const AuthScreen: React.FC = () => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+        </View>
+      </ScrollView>
     </View>
   );
 };
