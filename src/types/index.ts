@@ -68,6 +68,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
+  role?: 'customer' | 'admin' | 'vendor';
   avatar?: string;
   phone?: string;
   dateOfBirth?: string;
@@ -108,6 +109,58 @@ export interface ApiResponse<T> {
   data: T;
   success: boolean;
   message?: string;
+}
+
+export interface AdminProduct {
+  id: number;
+  name: string;
+  brand: string;
+  price: number;
+  stock: number;
+  image: string;
+  status: 'in_stock' | 'low_stock' | 'out_stock';
+}
+
+export interface AdminOrder {
+  id: string;
+  customer: string;
+  email: string;
+  total: number;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  items: number;
+  date: string;
+}
+
+export interface AdminUser {
+  id: number;
+  name: string;
+  email: string;
+  role: 'customer' | 'admin' | 'vendor';
+  orders: number;
+  spent: number;
+  joined: string;
+  avatar: string;
+}
+
+export interface AdminStore {
+  id: number;
+  name: string;
+  owner: string;
+  products: number;
+  sales: number;
+  status: 'active' | 'pending' | 'suspended';
+  rating: number;
+  logo: string;
+}
+
+export interface AdminTicket {
+  id: string;
+  user: string;
+  subject: string;
+  status: 'open' | 'in_progress' | 'resolved' | 'closed';
+  priority: 'urgent' | 'high' | 'medium' | 'low';
+  created: string;
+  messages: number;
 }
 
 export interface PaginatedResponse<T> {

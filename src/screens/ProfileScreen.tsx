@@ -62,6 +62,73 @@ export const ProfileScreen: React.FC = () => {
       </View>
 
       <View style={tw`px-4 py-6`}>
+        {user?.role === 'admin' && (
+          <>
+            <Text style={tw`text-xs uppercase tracking-wide text-gray-500 mb-3 px-2`}>Admin Panel</Text>
+            <View style={tw`bg-white rounded-2xl overflow-hidden mb-6`}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('AdminDashboard')}
+                style={tw`flex-row items-center px-4 py-4 border-b border-gray-100`}
+                accessibilityLabel="Admin dashboard"
+                accessibilityRole="button"
+              >
+                <Text style={tw`text-xl text-gray-700 mr-3`}>📊</Text>
+                <Text style={tw`text-gray-900 font-medium flex-1`}>Admin Dashboard</Text>
+                <Text style={tw`text-gray-400`}>›</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ProductManagement')}
+                style={tw`flex-row items-center px-4 py-4 border-b border-gray-100`}
+                accessibilityLabel="Manage products"
+                accessibilityRole="button"
+              >
+                <Text style={tw`text-xl text-gray-700 mr-3`}>⌚</Text>
+                <Text style={tw`text-gray-900 font-medium flex-1`}>Manage Products</Text>
+                <Text style={tw`text-gray-400`}>›</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('OrderManagement')}
+                style={tw`flex-row items-center px-4 py-4 border-b border-gray-100`}
+                accessibilityLabel="Manage orders"
+                accessibilityRole="button"
+              >
+                <Text style={tw`text-xl text-gray-700 mr-3`}>📦</Text>
+                <Text style={tw`text-gray-900 font-medium flex-1`}>Manage Orders</Text>
+                <Text style={tw`text-gray-400`}>›</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('UserManagement')}
+                style={tw`flex-row items-center px-4 py-4 border-b border-gray-100`}
+                accessibilityLabel="Manage users"
+                accessibilityRole="button"
+              >
+                <Text style={tw`text-xl text-gray-700 mr-3`}>👥</Text>
+                <Text style={tw`text-gray-900 font-medium flex-1`}>Manage Users</Text>
+                <Text style={tw`text-gray-400`}>›</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('StoreManagement')}
+                style={tw`flex-row items-center px-4 py-4 border-b border-gray-100`}
+                accessibilityLabel="Manage stores"
+                accessibilityRole="button"
+              >
+                <Text style={tw`text-xl text-gray-700 mr-3`}>🏪</Text>
+                <Text style={tw`text-gray-900 font-medium flex-1`}>Manage Stores</Text>
+                <Text style={tw`text-gray-400`}>›</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('SupportManagement')}
+                style={tw`flex-row items-center px-4 py-4`}
+                accessibilityLabel="Support tickets"
+                accessibilityRole="button"
+              >
+                <Text style={tw`text-xl text-gray-700 mr-3`}>💬</Text>
+                <Text style={tw`text-gray-900 font-medium flex-1`}>Support Tickets</Text>
+                <Text style={tw`text-gray-400`}>›</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
         <Text style={tw`text-xs uppercase tracking-wide text-gray-500 mb-3 px-2`}>My Account</Text>
         <View style={tw`bg-white rounded-2xl overflow-hidden mb-6`}>
           <TouchableOpacity

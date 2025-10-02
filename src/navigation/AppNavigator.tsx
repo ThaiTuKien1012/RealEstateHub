@@ -2,7 +2,22 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabNavigator } from './BottomTabNavigator';
-import { ProductDetailScreen, CheckoutScreen, AuthScreen, EditProfileScreen, WishlistScreen, OrderSuccessScreen, CompareScreen } from '../screens';
+import { AdminRouteGuard } from '../components';
+import { 
+  ProductDetailScreen, 
+  CheckoutScreen, 
+  AuthScreen, 
+  EditProfileScreen, 
+  WishlistScreen, 
+  OrderSuccessScreen, 
+  CompareScreen,
+  AdminDashboardScreen,
+  ProductManagementScreen,
+  OrderManagementScreen,
+  UserManagementScreen,
+  StoreManagementScreen,
+  SupportManagementScreen
+} from '../screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -65,6 +80,48 @@ export const AppNavigator: React.FC = () => {
           component={CompareScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen 
+          name="AdminDashboard" 
+          options={{ title: 'Admin Dashboard' }}
+        >
+          {() => <AdminRouteGuard><AdminDashboardScreen /></AdminRouteGuard>}
+        </Stack.Screen>
+        <Stack.Screen 
+          name="ProductManagement" 
+          options={{ title: 'Manage Products' }}
+        >
+          {() => <AdminRouteGuard><ProductManagementScreen /></AdminRouteGuard>}
+        </Stack.Screen>
+        <Stack.Screen 
+          name="OrderManagement" 
+          options={{ title: 'Manage Orders' }}
+        >
+          {() => <AdminRouteGuard><OrderManagementScreen /></AdminRouteGuard>}
+        </Stack.Screen>
+        <Stack.Screen 
+          name="UserManagement" 
+          options={{ title: 'Manage Users' }}
+        >
+          {() => <AdminRouteGuard><UserManagementScreen /></AdminRouteGuard>}
+        </Stack.Screen>
+        <Stack.Screen 
+          name="StoreManagement" 
+          options={{ title: 'Manage Stores' }}
+        >
+          {() => <AdminRouteGuard><StoreManagementScreen /></AdminRouteGuard>}
+        </Stack.Screen>
+        <Stack.Screen 
+          name="SupportManagement" 
+          options={{ title: 'Support Tickets' }}
+        >
+          {() => <AdminRouteGuard><SupportManagementScreen /></AdminRouteGuard>}
+        </Stack.Screen>
+        <Stack.Screen 
+          name="Analytics" 
+          options={{ title: 'Analytics' }}
+        >
+          {() => <AdminRouteGuard><AdminDashboardScreen /></AdminRouteGuard>}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

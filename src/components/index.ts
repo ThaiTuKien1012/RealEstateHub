@@ -3,3 +3,4 @@ export { ProductListItem } from './ProductListItem';
 export { ProductGallery } from './ProductGallery';
 export { FilterPanel } from './FilterPanel';
 export { QuickViewModal } from './QuickViewModal';
+export { AdminRouteGuard } from './AdminRouteGuard';
