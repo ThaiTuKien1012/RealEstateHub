@@ -135,7 +135,25 @@ export const reviewsApi = {
 export const authApi = {
   login: async (email: string, password: string) => {
     await delay(500);
-    // Mock login - always succeeds
+    
+    // Admin account
+    if (email === 'admin@watchtime.com' && password === 'admin123') {
+      return {
+        success: true,
+        data: {
+          user: {
+            id: 'admin-1',
+            email,
+            name: 'Admin User',
+            role: 'admin' as const,
+            avatar: 'https://ui-avatars.com/api/?name=Admin&background=3B82F6&color=fff',
+          },
+          token: 'mock-admin-jwt-token',
+        },
+      };
+    }
+    
+    // Regular customer account (any other credentials)
     return {
       success: true,
       data: {
@@ -143,6 +161,7 @@ export const authApi = {
           id: '1',
           email,
           name: email.split('@')[0],
+          role: 'customer' as const,
         },
         token: 'mock-jwt-token',
       },
@@ -158,6 +177,7 @@ export const authApi = {
           id: '1',
           email,
           name,
+          role: 'customer' as const,
         },
         token: 'mock-jwt-token',
       },
