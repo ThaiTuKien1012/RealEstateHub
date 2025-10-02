@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabNavigator } from './BottomTabNavigator';
-import { ProductDetailScreen, CheckoutScreen, AuthScreen, WishlistScreen, OrderSuccessScreen, CompareScreen } from '../screens';
+import { ProductDetailScreen, CheckoutScreen, AuthScreen, EditProfileScreen, WishlistScreen, OrderSuccessScreen, CompareScreen } from '../screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +40,11 @@ export const AppNavigator: React.FC = () => {
           name="Auth" 
           component={AuthScreen}
           options={{ title: 'Sign In' }}
+        />
+        <Stack.Screen 
+          name="EditProfile" 
+          component={EditProfileScreen}
+          options={{ title: 'Edit Profile' }}
         />
         <Stack.Screen 
           name="Wishlist" 

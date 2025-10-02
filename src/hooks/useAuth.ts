@@ -9,6 +9,8 @@ interface AuthStore {
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => Promise<void>;
+  updateProfile: (userData: Partial<User>) => Promise<void>;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
 }
 
 export const useAuth = create<AuthStore>((set) => ({
@@ -59,6 +61,34 @@ export const useAuth = create<AuthStore>((set) => ({
         isAuthenticated: false,
         isLoading: false,
       });
+    } catch (error) {
+      set({ isLoading: false });
+      throw error;
+    }
+  },
+
+  updateProfile: async (userData) => {
+    set({ isLoading: true });
+    try {
+      const currentUser = useAuth.getState().user;
+      if (currentUser) {
+        const updatedUser = { ...currentUser, ...userData };
+        set({
+          user: updatedUser,
+          isLoading: false,
+        });
+      }
+    } catch (error) {
+      set({ isLoading: false });
+      throw error;
+    }
+  },
+
+  changePassword: async (oldPassword, newPassword) => {
+    set({ isLoading: true });
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      set({ isLoading: false });
     } catch (error) {
       set({ isLoading: false });
       throw error;

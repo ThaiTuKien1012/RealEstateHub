@@ -69,6 +69,21 @@ export interface User {
   email: string;
   name: string;
   avatar?: string;
+  phone?: string;
+  dateOfBirth?: string;
+  gender?: 'male' | 'female' | 'other';
+  bio?: string;
+  address?: string;
+  preferences?: {
+    brands?: string[];
+    priceRange?: string;
+  };
+  notificationSettings?: {
+    email: boolean;
+    sms: boolean;
+    push: boolean;
+  };
+  twoFactorEnabled?: boolean;
 }
 
 export interface AuthState {

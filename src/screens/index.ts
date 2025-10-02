@@ -5,6 +5,7 @@ export { CartScreen } from './CartScreen';
 export { CheckoutScreen } from './CheckoutScreen';
 export { AuthScreen } from './AuthScreen';
 export { ProfileScreen } from './ProfileScreen';
+export { EditProfileScreen } from './EditProfileScreen';
 export { WishlistScreen } from './WishlistScreen';
 export { OrderSuccessScreen } from './OrderSuccessScreen';
 export { CompareScreen } from './CompareScreen';

@@ -46,6 +46,15 @@ export const ProfileScreen: React.FC = () => {
         </View>
         <Text style={tw`text-white text-xl font-bold mb-1`}>{user?.name || 'User'}</Text>
         <Text style={tw`text-yellow-100 text-sm`}>{user?.email || ''}</Text>
+        
+        <TouchableOpacity
+          onPress={() => navigation.navigate('EditProfile')}
+          style={tw`mt-4 bg-white px-6 py-2.5 rounded-xl`}
+          accessibilityLabel="Edit profile"
+          accessibilityRole="button"
+        >
+          <Text style={tw`text-yellow-600 font-semibold`}>Edit Profile</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={tw`px-4 py-6`}>
