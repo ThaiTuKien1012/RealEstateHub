@@ -57,9 +57,18 @@ Preferred communication style: Simple, everyday language (Vietnamese preferred).
 
 ### API & Data Layer
 
-**Mock API Implementation**: Uses Axios with simulated backend responses via artificial delays, mimicking real-world API behavior. All API functions return Promise-based responses wrapped in standardized `ApiResponse` types for consistent error handling.
+**Backend Integration (Oct 2, 2025)**: Fully integrated with Railway-hosted backend API at `https://beecommercewatchstore-production.up.railway.app/api`. Features dual-mode operation via `ENABLE_MOCK` toggle in `api.config.ts` - switch between mock data (development) and real API (production). Axios client configured with JWT authentication interceptors that automatically attach tokens to all requests and handle 401 unauthorized responses.
 
-**Data Structure**: Mock product data includes 18 luxury watch products with complete specifications (images, variants, reviews, pricing, materials). Products support variants (color, size, strap) with individual stock and price modifiers.
+**API Modules**: 
+- **Auth API**: Login, register, logout with JWT token management
+- **Products/Watches API**: Get all products, search with filters, featured items, best sellers, individual product details
+- **Cart API**: Full cart management (get, add, update, remove, clear items)
+- **Orders API**: Create orders, list with pagination, get order details, update order status
+- **Wishlist API**: Get wishlist, add/remove items
+- **Reviews API**: Get product reviews, create new reviews
+- **Admin API**: Users management (CRUD), Stores management (CRUD), Support tickets and messaging
+
+**Data Structure**: Products include complete specifications (images, variants, reviews, pricing, materials). All API responses use standardized `ApiResponse` types for consistent error handling. Backend provides 8 complete modules for e-commerce operations.
 
 **Caching Strategy**: React Query provides multi-level caching with configurable stale times. Products remain fresh for 5 minutes, featured products for 10 minutes, and search results for 2 minutes. Placeholder data prevents UI flashing during refetches.
 
@@ -136,8 +145,9 @@ Preferred communication style: Simple, everyday language (Vietnamese preferred).
 - Unsplash API (images.unsplash.com) for high-quality product photography in mock data
 
 ### Notes
-- Application currently uses mock API implementation with in-memory data
-- No backend database configured - ready for integration with REST API or GraphQL
-- Authentication is mock-based, ready for real auth provider integration (Firebase, Auth0, etc.)
+- **API Integration Complete (Oct 2, 2025)**: All 8 backend modules (Auth, Products, Cart, Orders, Wishlist, Reviews, Admin) integrated with Railway API
+- **Dual-Mode Operation**: Toggle between mock data (ENABLE_MOCK=true) and live backend (ENABLE_MOCK=false) in api.config.ts
+- **JWT Authentication**: Automatic token management with axios interceptors for secure API calls
+- **Production Ready**: All endpoints configured for Railway backend at https://beecommercewatchstore-production.up.railway.app/api
 - Payment processing is simulated, ready for Stripe/PayPal integration
 - Analytics hooks are placeholders for GA4/Amplitude integration

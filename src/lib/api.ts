@@ -498,6 +498,16 @@ export const adminApi = {
     return { success: true, data: response.data };
   },
 
+  createUser: async (userData: any) => {
+    if (API_CONFIG.ENABLE_MOCK) {
+      await delay(300);
+      return { success: true, data: { id: Date.now().toString(), ...userData } };
+    }
+
+    const response = await api.post('/users', userData);
+    return { success: true, data: response.data };
+  },
+
   updateUser: async (userId: string, userData: any) => {
     if (API_CONFIG.ENABLE_MOCK) {
       await delay(200);
