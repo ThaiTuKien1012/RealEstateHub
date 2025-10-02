@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
 import { Filter } from '../types';
 
 export interface SavedFilter {
@@ -17,66 +16,33 @@ interface SavedFiltersState {
   clearAll: () => void;
 }
 
-const customStorage: StateStorage = {
-  getItem: (name: string): string | null => {
-    try {
-      if (typeof globalThis !== 'undefined' && (globalThis as any).localStorage) {
-        return (globalThis as any).localStorage.getItem(name);
-      }
-    } catch {}
-    return null;
+export const useSavedFilters = create<SavedFiltersState>((set, get) => ({
+  savedFilters: [],
+
+  addFilter: (name: string, filters: Partial<Filter>) => {
+    const newFilter: SavedFilter = {
+      id: Date.now().toString(),
+      name,
+      filters,
+      createdAt: new Date().toISOString(),
+    };
+    set((state) => ({
+      savedFilters: [...state.savedFilters, newFilter],
+    }));
   },
-  setItem: (name: string, value: string): void => {
-    try {
-      if (typeof globalThis !== 'undefined' && (globalThis as any).localStorage) {
-        (globalThis as any).localStorage.setItem(name, value);
-      }
-    } catch {}
+
+  removeFilter: (id: string) => {
+    set((state) => ({
+      savedFilters: state.savedFilters.filter((f) => f.id !== id),
+    }));
   },
-  removeItem: (name: string): void => {
-    try {
-      if (typeof globalThis !== 'undefined' && (globalThis as any).localStorage) {
-        (globalThis as any).localStorage.removeItem(name);
-      }
-    } catch {}
+
+  loadFilter: (id: string) => {
+    const filter = get().savedFilters.find((f) => f.id === id);
+    return filter?.filters;
   },
-};
 
-export const useSavedFilters = create<SavedFiltersState>()(
-  persist(
-    (set, get) => ({
-      savedFilters: [],
-
-      addFilter: (name: string, filters: Partial<Filter>) => {
-        const newFilter: SavedFilter = {
-          id: Date.now().toString(),
-          name,
-          filters,
-          createdAt: new Date().toISOString(),
-        };
-        set((state) => ({
-          savedFilters: [...state.savedFilters, newFilter],
-        }));
-      },
-
-      removeFilter: (id: string) => {
-        set((state) => ({
-          savedFilters: state.savedFilters.filter((f) => f.id !== id),
-        }));
-      },
-
-      loadFilter: (id: string) => {
-        const filter = get().savedFilters.find((f) => f.id === id);
-        return filter?.filters;
-      },
-
-      clearAll: () => {
-        set({ savedFilters: [] });
-      },
-    }),
-    {
-      name: 'saved-filters-storage',
-      storage: createJSONStorage(() => customStorage),
-    }
-  )
-);
+  clearAll: () => {
+    set({ savedFilters: [] });
+  },
+}));
