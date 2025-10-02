@@ -134,17 +134,31 @@ export const reviewsApi = {
 
 export const authApi = {
   login: async (email: string, password: string) => {
-    const response = await api.post('/auth/login', { email, password });
-    const { token, user } = response.data.data;
+    console.log('🌐 API Login request to:', `${API_CONFIG.BASE_URL}/auth/login`);
+    console.log('📦 Request data:', { email, password: '***' });
     
     try {
-      (global as any).localStorage?.setItem('authToken', token);
-    } catch {}
-    
-    return {
-      success: true,
-      data: { user, token },
-    };
+      const response = await api.post('/auth/login', { email, password });
+      console.log('📥 Login response:', response.data);
+      
+      const { token, user } = response.data.data;
+      
+      try {
+        (global as any).localStorage?.setItem('authToken', token);
+        console.log('💾 Token saved to localStorage');
+      } catch (e) {
+        console.warn('⚠️ Failed to save token:', e);
+      }
+      
+      return {
+        success: true,
+        data: { user, token },
+      };
+    } catch (error: any) {
+      console.error('❌ API Login error:', error);
+      console.error('❌ Error response:', error?.response?.data);
+      throw error;
+    }
   },
 
   register: async (email: string, password: string, name: string) => {

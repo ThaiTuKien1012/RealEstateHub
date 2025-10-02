@@ -13,18 +13,32 @@ export const AuthScreen: React.FC = () => {
   const [name, setName] = useState('');
 
   const handleSubmit = async () => {
+    console.log('🔐 Login attempt:', { email, password: '***', isLoginMode });
+    
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter email and password');
+      return;
+    }
+
     try {
       if (isLoginMode) {
+        console.log('📤 Calling login API...');
         await login(email, password);
+        console.log('✅ Login successful!');
         Alert.alert('Success', 'Logged in successfully!');
         navigation.navigate('Main', { screen: 'HomeTab' });
       } else {
+        console.log('📤 Calling register API...');
         await register(email, password, name);
+        console.log('✅ Register successful!');
         Alert.alert('Success', 'Account created successfully!');
         navigation.navigate('Main', { screen: 'HomeTab' });
       }
-    } catch (error) {
-      Alert.alert('Error', 'Authentication failed. Please try again.');
+    } catch (error: any) {
+      console.error('❌ Auth error:', error);
+      console.error('❌ Error message:', error?.message);
+      console.error('❌ Error response:', error?.response?.data);
+      Alert.alert('Error', error?.response?.data?.message || error?.message || 'Authentication failed. Please try again.');
     }
   };
 
