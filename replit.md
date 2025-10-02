@@ -7,6 +7,7 @@ Timeless Watch Shop is a cross-platform luxury watch e-commerce application buil
 The application emphasizes performance, accessibility, and user experience with progressive image loading, offline support through caching, and internationalization capabilities. It uses a modern tech stack with React 19, React Query for server state management and Zustand for client-side state, ensuring efficient data handling and optimal performance across all platforms.
 
 **Recent Update (Oct 2, 2025)**: 
+- **Live Backend Integration**: Fully connected to Railway API - removed all mock data and logic, app now uses real backend exclusively
 - Upgraded to Expo SDK 54 with React 19.1.0 and React Native 0.81
 - Redesigned entire UI from web-style to mobile-native with bottom tab navigation, full-width components, and platform-specific styling
 - **Role-Based Navigation**: Dual navigation system automatically switches based on user role - Admin users see Dashboard/Orders/Users/Settings tabs, Customer users see Home/Shop/Cart/Profile tabs
@@ -57,7 +58,7 @@ Preferred communication style: Simple, everyday language (Vietnamese preferred).
 
 ### API & Data Layer
 
-**Backend Integration (Oct 2, 2025)**: Fully integrated with Railway-hosted backend API at `https://beecommercewatchstore-production.up.railway.app/api`. Features dual-mode operation via `ENABLE_MOCK` toggle in `api.config.ts` - switch between mock data (development) and real API (production). Axios client configured with JWT authentication interceptors that automatically attach tokens to all requests and handle 401 unauthorized responses.
+**Backend Integration (Oct 2, 2025)**: Fully integrated with Railway-hosted backend API at `https://beecommercewatchstore-production.up.railway.app/api`. All API calls directly connect to live backend with no mock data. Axios client configured with JWT authentication interceptors that automatically attach tokens to all requests and handle 401 unauthorized responses.
 
 **API Modules**: 
 - **Auth API**: Login, register, logout with JWT token management
@@ -146,8 +147,8 @@ Preferred communication style: Simple, everyday language (Vietnamese preferred).
 
 ### Notes
 - **API Integration Complete (Oct 2, 2025)**: All 8 backend modules (Auth, Products, Cart, Orders, Wishlist, Reviews, Admin) integrated with Railway API
-- **Dual-Mode Operation**: Toggle between mock data (ENABLE_MOCK=true) and live backend (ENABLE_MOCK=false) in api.config.ts
+- **Production Mode**: App uses live backend exclusively - all mock data and logic removed
 - **JWT Authentication**: Automatic token management with axios interceptors for secure API calls
-- **Production Ready**: All endpoints configured for Railway backend at https://beecommercewatchstore-production.up.railway.app/api
+- **Backend URL**: https://beecommercewatchstore-production.up.railway.app/api
 - Payment processing is simulated, ready for Stripe/PayPal integration
 - Analytics hooks are placeholders for GA4/Amplitude integration
