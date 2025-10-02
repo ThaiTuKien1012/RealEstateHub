@@ -19,7 +19,10 @@ export const AdminSettingsScreen: React.FC = () => {
           style: 'destructive',
           onPress: async () => {
             await logout();
-            navigation.replace('Main');
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Main' }],
+            });
           },
         },
       ]
@@ -27,29 +30,29 @@ export const AdminSettingsScreen: React.FC = () => {
   };
 
   const adminMenuItems = [
-    { icon: '⌚', label: 'Manage Products', route: 'ProductManagement' },
-    { icon: '🏪', label: 'Manage Stores', route: 'StoreManagement' },
-    { icon: '💬', label: 'Support Tickets', route: 'SupportManagement' },
-    { icon: '📊', label: 'Analytics', route: 'Analytics' },
+    { icon: '⊞', label: 'Manage Products', route: 'ProductManagement' },
+    { icon: '◇', label: 'Manage Stores', route: 'StoreManagement' },
+    { icon: '◎', label: 'Support Tickets', route: 'SupportManagement' },
+    { icon: '▤', label: 'Analytics', route: 'Analytics' },
   ];
 
   const settingsItems = [
-    { icon: '👤', label: 'Edit Profile', action: () => navigation.navigate('EditProfile') },
-    { icon: '🔔', label: 'Notifications', action: () => Alert.alert('Notifications', 'Notification settings') },
-    { icon: '🔒', label: 'Security', action: () => Alert.alert('Security', 'Security settings') },
-    { icon: '🌐', label: 'Language', action: () => Alert.alert('Language', 'EN - English') },
+    { icon: '◉', label: 'Edit Profile', action: () => navigation.navigate('EditProfile') },
+    { icon: '◈', label: 'Notifications', action: () => Alert.alert('Notifications', 'Notification settings') },
+    { icon: '◆', label: 'Security', action: () => Alert.alert('Security', 'Security settings') },
+    { icon: '◐', label: 'Language', action: () => Alert.alert('Language', 'EN - English') },
   ];
 
   return (
     <ScrollView style={tw`flex-1 bg-gray-50`}>
       <View style={tw`bg-gray-900 pt-8 pb-12 px-6 items-center`}>
-        <View style={tw`w-20 h-20 bg-blue-500 rounded-full items-center justify-center mb-3`}>
-          <Text style={tw`text-4xl`}>👑</Text>
+        <View style={tw`w-20 h-20 bg-gray-700 rounded-full items-center justify-center mb-3`}>
+          <Text style={tw`text-4xl text-gray-300`}>◉</Text>
         </View>
         <Text style={tw`text-white text-xl font-bold mb-1`}>{user?.name || 'Admin'}</Text>
         <Text style={tw`text-gray-300 text-sm mb-2`}>{user?.email || ''}</Text>
         <View style={tw`bg-white bg-opacity-20 px-3 py-1 rounded-full`}>
-          <Text style={tw`text-white text-xs font-semibold uppercase`}>👑 Administrator</Text>
+          <Text style={tw`text-white text-xs font-semibold uppercase`}>◆ Administrator</Text>
         </View>
       </View>
 
