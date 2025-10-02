@@ -148,7 +148,16 @@ export const authApi = {
   },
 
   register: async (email: string, password: string, name: string) => {
-    const response = await api.post('/auth/register', { email, password, name });
+    const nameParts = name.trim().split(' ');
+    const firstName = nameParts[0] || 'User';
+    const lastName = nameParts.slice(1).join(' ') || 'Name';
+    
+    const response = await api.post('/auth/register', { 
+      email, 
+      password, 
+      firstName,
+      lastName 
+    });
     const { token, user } = response.data;
     
     try {
