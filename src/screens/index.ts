@@ -4,3 +4,4 @@ export { ProductDetailScreen } from './ProductDetailScreen';
 export { CartScreen } from './CartScreen';
 export { CheckoutScreen } from './CheckoutScreen';
 export { AuthScreen } from './AuthScreen';
+export { ProfileScreen } from './ProfileScreen';

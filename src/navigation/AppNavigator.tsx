@@ -8,6 +8,7 @@ import {
   CartScreen,
   CheckoutScreen,
   AuthScreen,
+  ProfileScreen,
 } from '../screens';
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +28,7 @@ export const AppNavigator: React.FC = () => {
         <Stack.Screen name="Cart" component={CartScreen} />
         <Stack.Screen name="Checkout" component={CheckoutScreen} />
         <Stack.Screen name="Auth" component={AuthScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
