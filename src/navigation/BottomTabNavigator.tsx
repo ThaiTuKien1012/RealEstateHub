@@ -19,20 +19,20 @@ export const BottomTabNavigator: React.FC = () => {
         tabBarInactiveTintColor: '#999999',
         tabBarShowLabel: true,
         tabBarLabelStyle: {
-          fontSize: 11,
-          fontWeight: '500',
-          marginBottom: 4,
+          fontSize: 10,
+          fontWeight: '400',
+          marginTop: 2,
         },
         tabBarStyle: {
-          height: 64,
+          height: 60,
           borderTopWidth: 1,
           borderTopColor: '#e5e5e5',
           backgroundColor: '#ffffff',
-          paddingTop: 4,
+          paddingTop: 8,
           paddingBottom: 8,
         },
         tabBarIconStyle: {
-          marginTop: 4,
+          marginBottom: 0,
         },
       }}
     >
