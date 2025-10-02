@@ -41,8 +41,12 @@ export const ProfileScreen: React.FC = () => {
   return (
     <ScrollView style={tw`flex-1 bg-gray-50`}>
       <View style={tw`bg-yellow-600 pt-8 pb-12 px-6 items-center`}>
-        <View style={tw`w-20 h-20 bg-white rounded-full items-center justify-center mb-3`}>
-          <Text style={tw`text-4xl text-gray-700`}>◉</Text>
+        <View style={tw`w-20 h-20 bg-white rounded-full items-center justify-center mb-3 overflow-hidden`}>
+          {user?.avatar ? (
+            <Text style={tw`text-4xl`}>🖼️</Text>
+          ) : (
+            <Text style={tw`text-4xl text-gray-700`}>◉</Text>
+          )}
         </View>
         <Text style={tw`text-white text-xl font-bold mb-1`}>{user?.name || 'User'}</Text>
         <Text style={tw`text-yellow-100 text-sm`}>{user?.email || ''}</Text>

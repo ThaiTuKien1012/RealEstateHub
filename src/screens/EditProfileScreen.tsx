@@ -8,6 +8,7 @@ export const EditProfileScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const { user, updateProfile, changePassword, isLoading } = useAuth();
 
+  const [avatar, setAvatar] = useState(user?.avatar || '');
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState(user?.phone || '');
@@ -22,13 +23,24 @@ export const EditProfileScreen: React.FC = () => {
   const [twoFactor, setTwoFactor] = useState(user?.twoFactorEnabled ?? false);
 
   const [showPasswordSection, setShowPasswordSection] = useState(false);
+  const [showAvatarInput, setShowAvatarInput] = useState(false);
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const avatarOptions = [
+    'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
+    'https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka',
+    'https://api.dicebear.com/7.x/avataaars/svg?seed=Luna',
+    'https://api.dicebear.com/7.x/avataaars/svg?seed=Max',
+    'https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie',
+    'https://api.dicebear.com/7.x/avataaars/svg?seed=Oliver',
+  ];
+
   const handleSave = async () => {
     try {
       await updateProfile({
+        avatar,
         name,
         email,
         phone,
@@ -75,6 +87,58 @@ export const EditProfileScreen: React.FC = () => {
     <View style={tw`flex-1 bg-gray-50`}>
       <ScrollView>
         <View style={tw`px-4 py-6`}>
+          <Text style={tw`text-xs uppercase tracking-wide text-gray-500 mb-3 px-2`}>
+            Profile Picture
+          </Text>
+          <View style={tw`bg-white rounded-2xl p-4 mb-6 items-center`}>
+            <View style={tw`w-24 h-24 bg-gray-200 rounded-full items-center justify-center mb-4 overflow-hidden`}>
+              {avatar ? (
+                <Text style={tw`text-5xl`}>🖼️</Text>
+              ) : (
+                <Text style={tw`text-5xl text-gray-500`}>◉</Text>
+              )}
+            </View>
+            
+            <TouchableOpacity
+              onPress={() => setShowAvatarInput(!showAvatarInput)}
+              style={tw`bg-yellow-600 px-6 py-2.5 rounded-xl mb-3`}
+            >
+              <Text style={tw`text-white font-semibold`}>Change Avatar</Text>
+            </TouchableOpacity>
+
+            {showAvatarInput && (
+              <View style={tw`w-full`}>
+                <Text style={tw`text-sm text-gray-600 mb-3`}>Choose an avatar or enter URL:</Text>
+                
+                <View style={tw`flex-row flex-wrap justify-center gap-3 mb-4`}>
+                  {avatarOptions.map((url, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => setAvatar(url)}
+                      style={[
+                        tw`w-16 h-16 rounded-full border-2 items-center justify-center`,
+                        avatar === url ? tw`border-yellow-600` : tw`border-gray-200`,
+                      ]}
+                    >
+                      <Text style={tw`text-2xl`}>👤</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                <TextInput
+                  style={tw`bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 mb-2`}
+                  value={avatar}
+                  onChangeText={setAvatar}
+                  placeholder="Or paste image URL here..."
+                  autoCapitalize="none"
+                />
+                <Text style={tw`text-xs text-gray-500 text-center`}>
+                  Supports: JPG, PNG, SVG, GIF
+                </Text>
+              </View>
+            )}
+          </View>
+
           <Text style={tw`text-xs uppercase tracking-wide text-gray-500 mb-3 px-2`}>
             Personal Information
           </Text>
