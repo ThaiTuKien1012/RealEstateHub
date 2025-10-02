@@ -15,17 +15,24 @@ export const BottomTabNavigator: React.FC = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#ee4d2d',
-        tabBarInactiveTintColor: '#7a7a7a',
-        tabBarShowLabel: false,
+        tabBarActiveTintColor: '#1a1a1a',
+        tabBarInactiveTintColor: '#999999',
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: '500',
+          marginBottom: 4,
+        },
         tabBarStyle: {
-          height: 56,
+          height: 64,
           borderTopWidth: 1,
           borderTopColor: '#e5e5e5',
           backgroundColor: '#ffffff',
+          paddingTop: 4,
+          paddingBottom: 8,
         },
         tabBarIconStyle: {
-          marginTop: 0,
+          marginTop: 4,
         },
       }}
     >
@@ -33,9 +40,10 @@ export const BottomTabNavigator: React.FC = () => {
         name="HomeTab" 
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ focused, color }) => (
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: 26, color: focused ? '#ee4d2d' : '#7a7a7a' }}>🏠</Text>
+              <Text style={{ fontSize: 24, color }}>⌂</Text>
             </View>
           ),
         }}
@@ -44,9 +52,10 @@ export const BottomTabNavigator: React.FC = () => {
         name="CatalogTab" 
         component={CatalogScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
+          tabBarLabel: 'Shop',
+          tabBarIcon: ({ focused, color }) => (
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: 26, color: focused ? '#ee4d2d' : '#7a7a7a' }}>☰</Text>
+              <Text style={{ fontSize: 24, color }}>☰</Text>
             </View>
           ),
         }}
@@ -55,10 +64,11 @@ export const BottomTabNavigator: React.FC = () => {
         name="CartTab" 
         component={CartScreen}
         options={{
+          tabBarLabel: 'Cart',
           tabBarBadge: itemCount > 0 ? itemCount : undefined,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused, color }) => (
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: 26, color: focused ? '#ee4d2d' : '#7a7a7a' }}>🛒</Text>
+              <Text style={{ fontSize: 24, color }}>◫</Text>
             </View>
           ),
         }}
@@ -67,10 +77,11 @@ export const BottomTabNavigator: React.FC = () => {
         name="ProfileTab" 
         component={ProfileScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
+          tabBarLabel: isAuthenticated ? 'Profile' : 'Login',
+          tabBarIcon: ({ focused, color }) => (
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: 26, color: focused ? '#ee4d2d' : '#7a7a7a' }}>
-                {isAuthenticated ? '👤' : '🔐'}
+              <Text style={{ fontSize: 24, color }}>
+                {isAuthenticated ? '◉' : '◉'}
               </Text>
             </View>
           ),
