@@ -50,6 +50,13 @@ export const ProfileScreen: React.FC = () => {
         </View>
         <Text style={tw`text-white text-xl font-bold mb-1`}>{user?.name || 'User'}</Text>
         <Text style={tw`text-yellow-100 text-sm`}>{user?.email || ''}</Text>
+        {user?.role && (
+          <View style={tw`mt-2 bg-white bg-opacity-20 px-3 py-1 rounded-full`}>
+            <Text style={tw`text-white text-xs font-semibold uppercase`}>
+              {user.role === 'admin' ? '👑 Admin' : user.role === 'vendor' ? '🏪 Vendor' : '👤 Customer'}
+            </Text>
+          </View>
+        )}
         
         <TouchableOpacity
           onPress={() => navigation.navigate('EditProfile')}

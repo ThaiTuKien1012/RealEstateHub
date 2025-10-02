@@ -85,6 +85,30 @@ export const AuthScreen: React.FC = () => {
             </Text>
           </TouchableOpacity>
 
+          {isLoginMode && (
+            <TouchableOpacity
+              onPress={async () => {
+                setEmail('admin@watchtime.com');
+                setPassword('admin123');
+                try {
+                  await login('admin@watchtime.com', 'admin123');
+                  Alert.alert('Success', 'Admin logged in successfully!');
+                  navigation.navigate('Main', { screen: 'ProfileTab' });
+                } catch (error) {
+                  Alert.alert('Error', 'Admin login failed');
+                }
+              }}
+              style={tw`bg-blue-600 py-3 rounded-lg mb-4`}
+              disabled={isLoading}
+              accessibilityLabel="Quick admin login"
+              accessibilityRole="button"
+            >
+              <Text style={tw`text-white text-center font-semibold text-lg`}>
+                🔑 Quick Admin Login
+              </Text>
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity
             onPress={() => setIsLoginMode(!isLoginMode)}
             accessibilityLabel={isLoginMode ? 'Switch to sign up' : 'Switch to login'}
