@@ -75,39 +75,15 @@ export const AuthScreen: React.FC = () => {
 
           <TouchableOpacity
             onPress={handleSubmit}
-            style={tw`bg-yellow-600 py-3 rounded-lg mb-4`}
+            style={tw`bg-yellow-600 py-4 rounded-xl mb-4`}
             disabled={isLoading}
             accessibilityLabel={isLoginMode ? 'Login' : 'Sign up'}
             accessibilityRole="button"
           >
-            <Text style={tw`text-white text-center font-semibold text-lg`}>
+            <Text style={tw`text-white text-center font-bold text-lg`}>
               {isLoading ? 'Processing...' : (isLoginMode ? 'Login' : 'Sign Up')}
             </Text>
           </TouchableOpacity>
-
-          {isLoginMode && (
-            <TouchableOpacity
-              onPress={async () => {
-                setEmail('admin@watchshop.com');
-                setPassword('Admin123!@#');
-                try {
-                  await login('admin@watchshop.com', 'Admin123!@#');
-                  Alert.alert('Success', 'Admin logged in successfully!');
-                  navigation.navigate('Main', { screen: 'ProfileTab' });
-                } catch (error) {
-                  Alert.alert('Error', 'Admin login failed');
-                }
-              }}
-              style={tw`bg-blue-600 py-3 rounded-lg mb-4`}
-              disabled={isLoading}
-              accessibilityLabel="Quick admin login"
-              accessibilityRole="button"
-            >
-              <Text style={tw`text-white text-center font-semibold text-lg`}>
-                🔑 Quick Admin Login
-              </Text>
-            </TouchableOpacity>
-          )}
 
           <TouchableOpacity
             onPress={() => setIsLoginMode(!isLoginMode)}
