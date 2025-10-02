@@ -1,4 +1,6 @@
-import { productsApi } from '../src/lib/api';
+const axios = require('axios');
+
+const API_URL = 'https://beecommercewatchstore-production.up.railway.app/api';
 
 const luxuryWatches = [
   {
@@ -138,6 +140,23 @@ const luxuryWatches = [
     isBestSeller: true,
   },
   {
+    name: 'Oyster Perpetual 41',
+    brand: 'Rolex',
+    price: 6200,
+    description: 'Entry-level Rolex, vibrant dial colors, versatile sports watch',
+    images: ['https://images.unsplash.com/photo-1606390962981-e464eb6c5c39'],
+    category: 'Dress',
+    movement: 'Automatic',
+    caseMaterial: 'Stainless Steel',
+    caseDiameter: 41,
+    strapMaterial: 'Oyster',
+    waterResistance: 100,
+    color: 'Turquoise',
+    stock: 20,
+    isFeatured: false,
+    isBestSeller: true,
+  },
+  {
     name: 'Speedmaster Professional',
     brand: 'Omega',
     price: 6500,
@@ -272,6 +291,23 @@ const luxuryWatches = [
     stock: 4,
     isFeatured: true,
     isBestSeller: false,
+  },
+  {
+    name: 'Seamaster Diver 300M Chronograph',
+    brand: 'Omega',
+    price: 8200,
+    description: 'Professional dive chronograph, ceramic bezel, Co-Axial movement',
+    images: ['https://images.unsplash.com/photo-1622434641406-a158123450f9'],
+    category: 'Chronograph',
+    movement: 'Automatic',
+    caseMaterial: 'Stainless Steel',
+    caseDiameter: 44,
+    strapMaterial: 'Rubber',
+    waterResistance: 300,
+    color: 'Black',
+    stock: 9,
+    isFeatured: false,
+    isBestSeller: true,
   },
   {
     name: 'Nautilus',
@@ -817,45 +853,19 @@ const luxuryWatches = [
     isFeatured: false,
     isBestSeller: false,
   },
-  {
-    name: 'Oyster Perpetual 41',
-    brand: 'Rolex',
-    price: 6200,
-    description: 'Entry-level Rolex, vibrant dial colors, versatile sports watch',
-    images: ['https://images.unsplash.com/photo-1606390962981-e464eb6c5c39'],
-    category: 'Dress',
-    movement: 'Automatic',
-    caseMaterial: 'Stainless Steel',
-    caseDiameter: 41,
-    strapMaterial: 'Oyster',
-    waterResistance: 100,
-    color: 'Turquoise',
-    stock: 20,
-    isFeatured: false,
-    isBestSeller: true,
-  },
-  {
-    name: 'Seamaster Diver 300M Chronograph',
-    brand: 'Omega',
-    price: 8200,
-    description: 'Professional dive chronograph, ceramic bezel, Co-Axial movement',
-    images: ['https://images.unsplash.com/photo-1622434641406-a158123450f9'],
-    category: 'Chronograph',
-    movement: 'Automatic',
-    caseMaterial: 'Stainless Steel',
-    caseDiameter: 44,
-    strapMaterial: 'Rubber',
-    waterResistance: 300,
-    color: 'Black',
-    stock: 9,
-    isFeatured: false,
-    isBestSeller: true,
-  },
 ];
 
-export async function seedProducts() {
-  console.log('🌱 Starting to seed 50 luxury watch products from 6 brands...\n');
+async function seedProducts() {
+  console.log('🌱 Starting to seed 50 luxury watch products...\n');
   console.log('📋 Brands: Rolex, Omega, Patek Philippe, Tudor, Cartier, Tag Heuer\n');
+  console.log('⚠️  Important: You must be logged in as ADMIN to run this script!\n');
+  
+  const token = process.env.AUTH_TOKEN || '';
+  if (!token) {
+    console.error('❌ Error: AUTH_TOKEN environment variable not set!');
+    console.error('   Please login as admin first and set AUTH_TOKEN=your-token\n');
+    process.exit(1);
+  }
   
   let successCount = 0;
   let errorCount = 0;
@@ -863,13 +873,22 @@ export async function seedProducts() {
   for (let i = 0; i < luxuryWatches.length; i++) {
     const watch = luxuryWatches[i];
     try {
-      await productsApi.create(watch);
+      await axios.post(`${API_URL}/watches`, watch, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
       successCount++;
       console.log(`✅ [${i + 1}/50] Created: ${watch.brand} ${watch.name}`);
-    } catch (error: any) {
+    } catch (error) {
       errorCount++;
       console.error(`❌ [${i + 1}/50] Failed: ${watch.brand} ${watch.name}`);
-      console.error(`   Error: ${error.message}`);
+      if (error.response) {
+        console.error(`   Error: ${error.response.status} - ${error.response.data.message || error.response.statusText}`);
+      } else {
+        console.error(`   Error: ${error.message}`);
+      }
     }
   }
 
@@ -877,9 +896,9 @@ export async function seedProducts() {
   console.log(`   ✅ Success: ${successCount}`);
   console.log(`   ❌ Failed: ${errorCount}`);
   console.log(`   📦 Total: ${luxuryWatches.length}`);
-  console.log(`\n🏷️ Brands Distribution:`);
   
-  const brandCounts: Record<string, number> = {};
+  console.log(`\n🏷️  Brands Distribution:`);
+  const brandCounts = {};
   luxuryWatches.forEach(watch => {
     brandCounts[watch.brand] = (brandCounts[watch.brand] || 0) + 1;
   });
@@ -889,14 +908,12 @@ export async function seedProducts() {
   });
 }
 
-if (require.main === module) {
-  seedProducts()
-    .then(() => {
-      console.log('\n✨ Seeding completed!');
-      process.exit(0);
-    })
-    .catch((error) => {
-      console.error('\n💥 Seeding failed:', error);
-      process.exit(1);
-    });
-}
+seedProducts()
+  .then(() => {
+    console.log('\n✨ Seeding completed!');
+    process.exit(0);
+  })
+  .catch((error) => {
+    console.error('\n💥 Seeding failed:', error.message);
+    process.exit(1);
+  });
