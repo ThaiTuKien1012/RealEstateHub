@@ -135,7 +135,7 @@ export const reviewsApi = {
 export const authApi = {
   login: async (email: string, password: string) => {
     const response = await api.post('/auth/login', { email, password });
-    const { token, user } = response.data;
+    const { token, user } = response.data.data;
     
     try {
       (global as any).localStorage?.setItem('authToken', token);
@@ -158,7 +158,7 @@ export const authApi = {
       firstName,
       lastName 
     });
-    const { token, user } = response.data;
+    const { token, user } = response.data.data;
     
     try {
       (global as any).localStorage?.setItem('authToken', token);
