@@ -15,3 +15,4 @@ export { OrderManagementScreen } from './OrderManagementScreen';
 export { UserManagementScreen } from './UserManagementScreen';
 export { StoreManagementScreen } from './StoreManagementScreen';
 export { SupportManagementScreen } from './SupportManagementScreen';
+export { AdminSettingsScreen } from './AdminSettingsScreen';
