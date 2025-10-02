@@ -88,10 +88,10 @@ export const AuthScreen: React.FC = () => {
           {isLoginMode && (
             <TouchableOpacity
               onPress={async () => {
-                setEmail('admin@watchtime.com');
-                setPassword('admin123');
+                setEmail('admin@watchshop.com');
+                setPassword('Admin123!@#');
                 try {
-                  await login('admin@watchtime.com', 'admin123');
+                  await login('admin@watchshop.com', 'Admin123!@#');
                   Alert.alert('Success', 'Admin logged in successfully!');
                   navigation.navigate('Main', { screen: 'ProfileTab' });
                 } catch (error) {
