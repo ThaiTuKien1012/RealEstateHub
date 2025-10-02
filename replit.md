@@ -151,10 +151,18 @@ Preferred communication style: Simple, everyday language (Vietnamese preferred).
 ### Mock Data Sources
 - Unsplash API (images.unsplash.com) for high-quality product photography in mock data
 
+### Backend Dependencies
+- **Node.js + Express**: Custom backend server in `/backend` folder
+- **PostgreSQL + Drizzle ORM**: Database with type-safe query builder
+- **bcrypt**: Password hashing for secure authentication
+- **jsonwebtoken**: JWT token generation and verification
+- **cors**: Cross-origin resource sharing for frontend-backend communication
+
 ### Notes
-- **API Integration Complete (Oct 2, 2025)**: All 8 backend modules (Auth, Products, Cart, Orders, Wishlist, Reviews, Admin) integrated with Railway API
-- **Production Mode**: App uses live backend exclusively - all mock data and logic removed
-- **JWT Authentication**: Automatic token management with axios interceptors for secure API calls
-- **Backend URL**: https://beecommercewatchstore-production.up.railway.app/api
+- **Custom Backend (Oct 2, 2025)**: Built custom Node.js backend to replace Railway API due to admin access limitations
+- **6 Core Modules**: Auth (JWT), Watches/Products, Cart, Orders, Wishlist, Users (Admin)
+- **50 Products Seeded**: Auto-seeds luxury watches from 6 brands on startup
+- **Admin Access**: Default admin user `admin@watchshop.com` / `Admin123!@#`
+- **Dual Workflows**: Backend API (port 3000) + Expo Web (port 5000) running concurrently
 - Payment processing is simulated, ready for Stripe/PayPal integration
 - Analytics hooks are placeholders for GA4/Amplitude integration
