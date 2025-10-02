@@ -180,7 +180,7 @@ export const HomeScreen: React.FC = () => {
           <View style={tw`flex-row flex-wrap px-2`}>
             {bestSellersData?.data?.map((item) => (
               <View key={item.id} style={tw`w-1/2 p-1`}>
-                <ProductCard product={item} compact />
+                <ProductCard product={item} />
               </View>
             ))}
           </View>
