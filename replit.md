@@ -17,6 +17,16 @@ The application emphasizes performance, accessibility, and user experience with 
 - Enhanced ProfileScreen with wishlist access, settings sections, and account management options
 - Fixed all navigation to use proper nested navigation pattern for consistent routing
 
+**Advanced Catalog Features (Oct 2, 2025)**:
+- **View Mode Toggle**: Switch between 2-column grid and single-column list layouts with visual icons (⊞/☰)
+- **Quick View Modal**: Preview product details without leaving catalog, includes add to cart functionality
+- **Product Comparison**: Select up to 3 products with floating comparison bar, dedicated comparison screen with side-by-side specs (Zustand store)
+- **Enhanced Price Filter**: Preset buttons ($0-5K, $5K-10K, $10K-20K, $20K+) plus custom min/max inputs
+- **Stock Status Badges**: Visual indicators - "✓ In Stock" (green), "⚠️ Only X Left" (orange), "⭕ Out of Stock" (red)
+- **Save/Load Filters**: Persistent filter storage with Zustand persist middleware (localStorage on web), cross-platform save modal
+- **Recently Viewed Carousel**: Horizontal scrollable section showing last 5 viewed products in catalog
+- **Pagination Controls**: Clean prev/next navigation with page indicator
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language (Vietnamese preferred).
@@ -39,7 +49,7 @@ Preferred communication style: Simple, everyday language (Vietnamese preferred).
 
 **Server State**: React Query (TanStack Query) manages all server state with intelligent caching, automatic background refetching, and optimistic updates. Custom hooks (`useProducts`, `useProduct`, `useFeaturedProducts`, `useBestSellers`, `useProductSearch`) encapsulate query logic with appropriate stale times (2-10 minutes) to balance freshness and performance.
 
-**Client State**: Zustand stores handle cart (`useCart`) and authentication (`useAuth`) state with persistent actions. Cart store manages items, quantities, variant selection, and calculations. Auth store handles user sessions and authentication flow. Both use simple, predictable state updates without boilerplate.
+**Client State**: Zustand stores handle cart (`useCart`), authentication (`useAuth`), wishlist (`useWishlist`), recently viewed (`useRecentlyViewed`), product comparison (`useComparison`), and saved filters (`useSavedFilters`) state. Cart store manages items, quantities, variant selection, and calculations. Auth store handles user sessions. Wishlist and Recently Viewed track user preferences and browsing history. Comparison store manages up to 3 products for side-by-side comparison. Saved Filters store persists user filter preferences to localStorage (web) via Zustand persist middleware. All stores use simple, predictable state updates without boilerplate.
 
 **Data Flow**: Unidirectional data flow from API → React Query cache → components for server data, and user actions → Zustand stores → components for client state. Debouncing is implemented for search inputs to reduce unnecessary API calls.
 
