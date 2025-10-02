@@ -24,19 +24,9 @@ export const CheckoutScreen: React.FC = () => {
   };
 
   const handlePlaceOrder = () => {
-    Alert.alert(
-      'Order Placed!',
-      'Thank you for your order. This is a demo checkout - no payment was processed.',
-      [
-        {
-          text: 'OK',
-          onPress: () => {
-            clearCart();
-            navigation.navigate('Home');
-          },
-        },
-      ]
-    );
+    const total = getTotal();
+    clearCart();
+    navigation.navigate('OrderSuccess', { total });
   };
 
   return (

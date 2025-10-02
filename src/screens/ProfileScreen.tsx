@@ -3,10 +3,12 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
 import { useAuth } from '../hooks/useAuth';
+import { useWishlist } from '../hooks/useWishlist';
 
 export const ProfileScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const { user, isAuthenticated, logout } = useAuth();
+  const wishlistCount = useWishlist(state => state.items.length);
 
   const handleLogout = async () => {
     await logout();
@@ -43,8 +45,23 @@ export const ProfileScreen: React.FC = () => {
       </View>
 
       <View style={tw`px-4 py-6`}>
-        <Text style={tw`text-xs uppercase tracking-wide text-gray-500 mb-3 px-2`}>Quick Actions</Text>
+        <Text style={tw`text-xs uppercase tracking-wide text-gray-500 mb-3 px-2`}>My Account</Text>
         <View style={tw`bg-white rounded-2xl overflow-hidden mb-6`}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Wishlist')}
+            style={tw`flex-row items-center px-4 py-4 border-b border-gray-100`}
+            accessibilityLabel="View wishlist"
+            accessibilityRole="button"
+          >
+            <Text style={tw`text-2xl mr-3`}>❤️</Text>
+            <Text style={tw`text-gray-900 font-medium flex-1`}>My Wishlist</Text>
+            {wishlistCount > 0 && (
+              <View style={tw`bg-yellow-600 px-2 py-1 rounded-full mr-2`}>
+                <Text style={tw`text-white text-xs font-bold`}>{wishlistCount}</Text>
+              </View>
+            )}
+            <Text style={tw`text-gray-400`}>→</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate('CartTab')}
             style={tw`flex-row items-center px-4 py-4 border-b border-gray-100`}
@@ -52,7 +69,7 @@ export const ProfileScreen: React.FC = () => {
             accessibilityRole="button"
           >
             <Text style={tw`text-2xl mr-3`}>🛒</Text>
-            <Text style={tw`text-gray-900 font-medium flex-1`}>View Cart</Text>
+            <Text style={tw`text-gray-900 font-medium flex-1`}>My Cart</Text>
             <Text style={tw`text-gray-400`}>→</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -63,6 +80,37 @@ export const ProfileScreen: React.FC = () => {
           >
             <Text style={tw`text-2xl mr-3`}>🔍</Text>
             <Text style={tw`text-gray-900 font-medium flex-1`}>Browse Catalog</Text>
+            <Text style={tw`text-gray-400`}>→</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={tw`text-xs uppercase tracking-wide text-gray-500 mb-3 px-2`}>Settings</Text>
+        <View style={tw`bg-white rounded-2xl overflow-hidden mb-6`}>
+          <TouchableOpacity
+            style={tw`flex-row items-center px-4 py-4 border-b border-gray-100`}
+            accessibilityLabel="Account settings"
+            accessibilityRole="button"
+          >
+            <Text style={tw`text-2xl mr-3`}>⚙️</Text>
+            <Text style={tw`text-gray-900 font-medium flex-1`}>Settings</Text>
+            <Text style={tw`text-gray-400`}>→</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={tw`flex-row items-center px-4 py-4 border-b border-gray-100`}
+            accessibilityLabel="Help center"
+            accessibilityRole="button"
+          >
+            <Text style={tw`text-2xl mr-3`}>❓</Text>
+            <Text style={tw`text-gray-900 font-medium flex-1`}>Help Center</Text>
+            <Text style={tw`text-gray-400`}>→</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={tw`flex-row items-center px-4 py-4`}
+            accessibilityLabel="About"
+            accessibilityRole="button"
+          >
+            <Text style={tw`text-2xl mr-3`}>ℹ️</Text>
+            <Text style={tw`text-gray-900 font-medium flex-1`}>About</Text>
             <Text style={tw`text-gray-400`}>→</Text>
           </TouchableOpacity>
         </View>

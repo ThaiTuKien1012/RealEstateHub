@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabNavigator } from './BottomTabNavigator';
-import { ProductDetailScreen, CheckoutScreen, AuthScreen } from '../screens';
+import { ProductDetailScreen, CheckoutScreen, AuthScreen, WishlistScreen, OrderSuccessScreen } from '../screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +40,20 @@ export const AppNavigator: React.FC = () => {
           name="Auth" 
           component={AuthScreen}
           options={{ title: 'Sign In' }}
+        />
+        <Stack.Screen 
+          name="Wishlist" 
+          component={WishlistScreen}
+          options={{ title: 'My Wishlist' }}
+        />
+        <Stack.Screen 
+          name="OrderSuccess" 
+          component={OrderSuccessScreen}
+          options={{ 
+            title: 'Order Confirmed',
+            headerLeft: () => null,
+            gestureEnabled: false,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
