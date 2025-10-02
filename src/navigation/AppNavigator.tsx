@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabNavigator } from './BottomTabNavigator';
-import { ProductDetailScreen, CheckoutScreen, AuthScreen, WishlistScreen, OrderSuccessScreen } from '../screens';
+import { ProductDetailScreen, CheckoutScreen, AuthScreen, WishlistScreen, OrderSuccessScreen, CompareScreen } from '../screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +54,11 @@ export const AppNavigator: React.FC = () => {
             headerLeft: () => null,
             gestureEnabled: false,
           }}
+        />
+        <Stack.Screen 
+          name="Compare" 
+          component={CompareScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

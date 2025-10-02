@@ -4,16 +4,20 @@ import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
 import { Product } from '../types';
 import { useWishlist } from '../hooks/useWishlist';
+import { useComparison } from '../hooks/useComparison';
 
 interface ProductListItemProps {
   product: Product;
   onQuickView?: (productId: string) => void;
+  showCompare?: boolean;
 }
 
-export const ProductListItem: React.FC<ProductListItemProps> = ({ product, onQuickView }) => {
+export const ProductListItem: React.FC<ProductListItemProps> = ({ product, onQuickView, showCompare }) => {
   const navigation = useNavigation<any>();
   const { addItem, removeItem, isInWishlist } = useWishlist();
   const inWishlist = isInWishlist(product.id);
+  const { addItem: addToCompare, removeItem: removeFromCompare, isInComparison, items: compareItems } = useComparison();
+  const inComparison = isInComparison(product.id);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -29,6 +33,16 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product, onQui
       removeItem(product.id);
     } else {
       addItem(product);
+    }
+  };
+
+  const handleCompareToggle = () => {
+    if (inComparison) {
+      removeFromCompare(product.id);
+    } else {
+      if (compareItems.length < 3) {
+        addToCompare(product);
+      }
     }
   };
 
@@ -128,16 +142,38 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product, onQui
         </View>
       </TouchableOpacity>
 
-      {onQuickView && (
-        <TouchableOpacity
-          onPress={() => onQuickView(product.id)}
-          style={tw`mx-4 mb-4 bg-gray-900 py-2 rounded-lg items-center justify-center`}
-          accessibilityLabel="Quick view"
-          accessibilityRole="button"
-        >
-          <Text style={tw`text-white text-xs font-bold`}>👁 Quick View</Text>
-        </TouchableOpacity>
-      )}
+      <View style={tw`mx-4 mb-4 gap-2 flex-row`}>
+        {onQuickView && (
+          <TouchableOpacity
+            onPress={() => onQuickView(product.id)}
+            style={tw`flex-1 bg-gray-900 py-2 rounded-lg items-center justify-center`}
+            accessibilityLabel="Quick view"
+            accessibilityRole="button"
+          >
+            <Text style={tw`text-white text-xs font-bold`}>👁 Quick View</Text>
+          </TouchableOpacity>
+        )}
+        
+        {showCompare && (
+          <TouchableOpacity
+            onPress={handleCompareToggle}
+            style={[
+              tw`flex-1 py-2 rounded-lg items-center justify-center border-2`,
+              inComparison ? tw`bg-yellow-600 border-yellow-600` : tw`bg-white border-gray-300`,
+            ]}
+            accessibilityLabel={inComparison ? "Remove from comparison" : "Add to comparison"}
+            accessibilityRole="button"
+            disabled={!inComparison && compareItems.length >= 3}
+          >
+            <Text style={[
+              tw`text-xs font-bold`,
+              inComparison ? tw`text-white` : tw`text-gray-700`,
+            ]}>
+              {inComparison ? '✓ Compare' : '⊞ Compare'}
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };

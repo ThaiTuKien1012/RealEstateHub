@@ -9,16 +9,19 @@ import {
   Modal,
   TextInput,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
 import { ProductCard, ProductListItem, FilterPanel, QuickViewModal } from '../components';
 import { useProductSearch } from '../hooks/useProducts';
 import { useDebounce } from '../hooks/useDebounce';
+import { useComparison } from '../hooks/useComparison';
 import { Filter } from '../types';
 import { FILTERS_DEFAULT, SORT_OPTIONS } from '../constants';
 
 type ViewMode = 'grid' | 'list';
 
 export const CatalogScreen: React.FC = () => {
+  const navigation = useNavigation<any>();
   const [filters, setFilters] = useState<Partial<Filter>>(FILTERS_DEFAULT);
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
@@ -26,6 +29,7 @@ export const CatalogScreen: React.FC = () => {
   const [sortBy, setSortBy] = useState<string>('newest');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [quickViewProductId, setQuickViewProductId] = useState<string | null>(null);
+  const { items: compareItems } = useComparison();
 
   const debouncedSearch = useDebounce(searchQuery, 500);
 
@@ -174,7 +178,7 @@ export const CatalogScreen: React.FC = () => {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                   <View style={tw`w-1/2 px-2 mb-3`}>
-                    <ProductCard product={item} onQuickView={setQuickViewProductId} />
+                    <ProductCard product={item} onQuickView={setQuickViewProductId} showCompare />
                   </View>
                 )}
                 contentContainerStyle={tw`px-2`}
@@ -192,7 +196,7 @@ export const CatalogScreen: React.FC = () => {
                 key="catalog-list"
                 scrollEnabled={false}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item }) => <ProductListItem product={item} onQuickView={setQuickViewProductId} />}
+                renderItem={({ item }) => <ProductListItem product={item} onQuickView={setQuickViewProductId} showCompare />}
                 contentContainerStyle={tw`px-4`}
                 ListEmptyComponent={
                   <View style={tw`py-16 px-4`}>
@@ -257,6 +261,30 @@ export const CatalogScreen: React.FC = () => {
         productId={quickViewProductId}
         onClose={() => setQuickViewProductId(null)}
       />
+
+      {compareItems.length > 0 && (
+        <View style={tw`absolute bottom-0 left-0 right-0 bg-yellow-600 px-5 py-4`}>
+          <View style={tw`flex-row items-center justify-between`}>
+            <View>
+              <Text style={tw`text-white font-bold text-base`}>
+                {compareItems.length} {compareItems.length === 1 ? 'Product' : 'Products'} Selected
+              </Text>
+              <Text style={tw`text-yellow-100 text-xs`}>
+                {compareItems.length < 3 ? `Add ${3 - compareItems.length} more to compare` : 'Ready to compare'}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Compare')}
+              style={tw`bg-white px-6 py-3 rounded-xl`}
+              disabled={compareItems.length < 2}
+            >
+              <Text style={tw`text-yellow-600 font-bold text-sm`}>
+                Compare →
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </View>
   );
 };

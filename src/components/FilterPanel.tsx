@@ -168,15 +168,51 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
         <View style={tw`mb-6`}>
           <Text style={tw`text-lg font-semibold mb-3`}>Price Range</Text>
+          
+          <View style={tw`flex-row flex-wrap gap-2 mb-4`}>
+            {[
+              { label: 'Under $5K', range: [0, 5000] },
+              { label: '$5K - $10K', range: [5000, 10000] },
+              { label: '$10K - $20K', range: [10000, 20000] },
+              { label: '$20K+', range: [20000, 50000] },
+            ].map(preset => {
+              const isSelected = localFilters.priceRange?.[0] === preset.range[0] && 
+                                 localFilters.priceRange?.[1] === preset.range[1];
+              return (
+                <TouchableOpacity
+                  key={preset.label}
+                  onPress={() => setLocalFilters({ ...localFilters, priceRange: preset.range as [number, number] })}
+                  style={[
+                    tw`px-3 py-2 rounded-full border`,
+                    isSelected
+                      ? tw`bg-yellow-600 border-yellow-600`
+                      : tw`bg-white border-gray-300`,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      tw`text-sm`,
+                      isSelected ? tw`text-white` : tw`text-gray-700`,
+                    ]}
+                  >
+                    {preset.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
+          <Text style={tw`text-sm text-gray-600 mb-2`}>Or set custom range:</Text>
           <View style={tw`flex-row gap-4`}>
             <View style={tw`flex-1`}>
-              <Text style={tw`text-sm text-gray-600 mb-1`}>Min</Text>
+              <Text style={tw`text-xs text-gray-500 mb-1`}>Min ($)</Text>
               <TextInput
-                style={tw`border border-gray-300 rounded px-3 py-2`}
+                style={tw`border border-gray-300 rounded-lg px-3 py-2 bg-white`}
                 keyboardType="numeric"
-                value={localFilters.priceRange?.[0]?.toString() || '0'}
+                placeholder="0"
+                value={localFilters.priceRange?.[0]?.toString() || ''}
                 onChangeText={(text) => {
-                  const min = parseInt(text) || 0;
+                  const min = text ? parseInt(text) || 0 : 0;
                   const max = localFilters.priceRange?.[1] || 50000;
                   setLocalFilters({ ...localFilters, priceRange: [min, max] });
                 }}
@@ -184,13 +220,14 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               />
             </View>
             <View style={tw`flex-1`}>
-              <Text style={tw`text-sm text-gray-600 mb-1`}>Max</Text>
+              <Text style={tw`text-xs text-gray-500 mb-1`}>Max ($)</Text>
               <TextInput
-                style={tw`border border-gray-300 rounded px-3 py-2`}
+                style={tw`border border-gray-300 rounded-lg px-3 py-2 bg-white`}
                 keyboardType="numeric"
-                value={localFilters.priceRange?.[1]?.toString() || '50000'}
+                placeholder="50000"
+                value={localFilters.priceRange?.[1]?.toString() || ''}
                 onChangeText={(text) => {
-                  const max = parseInt(text) || 50000;
+                  const max = text ? parseInt(text) || 50000 : 50000;
                   const min = localFilters.priceRange?.[0] || 0;
                   setLocalFilters({ ...localFilters, priceRange: [min, max] });
                 }}

@@ -7,3 +7,4 @@ export { AuthScreen } from './AuthScreen';
 export { ProfileScreen } from './ProfileScreen';
 export { WishlistScreen } from './WishlistScreen';
 export { OrderSuccessScreen } from './OrderSuccessScreen';
+export { CompareScreen } from './CompareScreen';
