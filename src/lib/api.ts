@@ -1,16 +1,58 @@
 import axios from 'axios';
 import { Product, Review, ApiResponse, PaginatedResponse, Filter } from '../types';
 import { mockProducts, mockReviews } from '../data/mockProducts';
+import { API_CONFIG } from '../config/api.config';
 
 const api = axios.create({
-  baseURL: '/api',
-  timeout: 10000,
+  baseURL: API_CONFIG.BASE_URL,
+  timeout: API_CONFIG.TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Mock API implementation - simulates backend responses
+// Token storage helper (works on web)
+const getToken = () => {
+  try {
+    return (global as any).localStorage?.getItem('authToken') || null;
+  } catch {
+    return null;
+  }
+};
+
+const removeToken = () => {
+  try {
+    (global as any).localStorage?.removeItem('authToken');
+  } catch {
+    // Ignore error
+  }
+};
+
+// Request interceptor to add auth token
+api.interceptors.request.use(
+  (config) => {
+    const token = getToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor for error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expired or invalid
+      removeToken();
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Mock API implementation - simulates backend responses (for development)
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const productsApi = {
@@ -134,58 +176,95 @@ export const reviewsApi = {
 
 export const authApi = {
   login: async (email: string, password: string) => {
-    await delay(500);
-    
-    // Admin account
-    if (email === 'admin@watchtime.com' && password === 'admin123') {
+    if (API_CONFIG.ENABLE_MOCK) {
+      // Mock mode for development
+      await delay(500);
+      if (email === 'admin@watchtime.com' && password === 'admin123') {
+        return {
+          success: true,
+          data: {
+            user: {
+              id: 'admin-1',
+              email,
+              name: 'Admin User',
+              role: 'admin' as const,
+              avatar: 'https://ui-avatars.com/api/?name=Admin&background=3B82F6&color=fff',
+            },
+            token: 'mock-admin-jwt-token',
+          },
+        };
+      }
       return {
         success: true,
         data: {
           user: {
-            id: 'admin-1',
+            id: '1',
             email,
-            name: 'Admin User',
-            role: 'admin' as const,
-            avatar: 'https://ui-avatars.com/api/?name=Admin&background=3B82F6&color=fff',
+            name: email.split('@')[0],
+            role: 'customer' as const,
           },
-          token: 'mock-admin-jwt-token',
+          token: 'mock-jwt-token',
         },
       };
     }
+
+    // Real API call
+    const response = await api.post('/auth/login', { email, password });
+    const { token, user } = response.data;
     
-    // Regular customer account (any other credentials)
+    // Save token
+    try {
+      (global as any).localStorage?.setItem('authToken', token);
+    } catch {}
+    
     return {
       success: true,
-      data: {
-        user: {
-          id: '1',
-          email,
-          name: email.split('@')[0],
-          role: 'customer' as const,
-        },
-        token: 'mock-jwt-token',
-      },
+      data: { user, token },
     };
   },
 
   register: async (email: string, password: string, name: string) => {
-    await delay(500);
+    if (API_CONFIG.ENABLE_MOCK) {
+      await delay(500);
+      return {
+        success: true,
+        data: {
+          user: {
+            id: '1',
+            email,
+            name,
+            role: 'customer' as const,
+          },
+          token: 'mock-jwt-token',
+        },
+      };
+    }
+
+    // Real API call
+    const response = await api.post('/auth/register', { email, password, name });
+    const { token, user } = response.data;
+    
+    // Save token
+    try {
+      (global as any).localStorage?.setItem('authToken', token);
+    } catch {}
+    
     return {
       success: true,
-      data: {
-        user: {
-          id: '1',
-          email,
-          name,
-          role: 'customer' as const,
-        },
-        token: 'mock-jwt-token',
-      },
+      data: { user, token },
     };
   },
 
   logout: async () => {
-    await delay(200);
+    if (API_CONFIG.ENABLE_MOCK) {
+      await delay(200);
+      removeToken();
+      return { success: true };
+    }
+
+    // Real API call
+    await api.post('/auth/logout');
+    removeToken();
     return { success: true };
   },
 };

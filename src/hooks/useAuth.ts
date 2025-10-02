@@ -61,10 +61,8 @@ export const useAuth = create<AuthStore>((set) => ({
         isAuthenticated: false,
         isLoading: false,
       });
-      console.log('Logout successful - user cleared');
     } catch (error) {
       set({ isLoading: false });
-      console.error('Logout error:', error);
       throw error;
     }
   },

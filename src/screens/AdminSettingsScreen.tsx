@@ -11,9 +11,8 @@ export const AdminSettingsScreen: React.FC = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      console.log('Admin logout completed');
     } catch (error) {
-      console.error('Logout failed:', error);
+      // Handle error silently
     }
   };
 
