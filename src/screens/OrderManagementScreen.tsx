@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput, Modal } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, Modal, ActivityIndicator } from 'react-native';
 import tw from 'twrnc';
+import axios from 'axios';
+import { API_CONFIG } from '../config/api.config';
 import { AdminOrder } from '../types';
 
 export const OrderManagementScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<AdminOrder | null>(null);
   const [filterStatus, setFilterStatus] = useState<'all' | 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'>('all');
+  const [orders, setOrders] = useState<AdminOrder[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const orders: AdminOrder[] = [
-    { id: '#1234', customer: 'John Doe', email: 'john@example.com', total: 2500, status: 'pending' as const, items: 2, date: '2025-10-01' },
-    { id: '#1235', customer: 'Jane Smith', email: 'jane@example.com', total: 5800, status: 'delivered' as const, items: 1, date: '2025-09-28' },
-    { id: '#1236', customer: 'Mike Johnson', email: 'mike@example.com', total: 3200, status: 'processing' as const, items: 3, date: '2025-10-02' },
-    { id: '#1237', customer: 'Sarah Williams', email: 'sarah@example.com', total: 8900, status: 'shipped' as const, items: 1, date: '2025-09-30' },
-  ];
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    try {
+      const token = (global as any).localStorage?.getItem('authToken');
+      const response = await axios.get(`${API_CONFIG.BASE_URL}/orders`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.success) {
+        setOrders(response.data.data || []);
+      }
+    } catch (error) {
+      console.error('Fetch orders error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getStatusColor = (status: string) => {
     const colors = {

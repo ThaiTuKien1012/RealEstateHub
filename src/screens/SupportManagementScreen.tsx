@@ -8,12 +8,7 @@ export const SupportManagementScreen: React.FC = () => {
   const [selectedTicket, setSelectedTicket] = useState<AdminTicket | null>(null);
   const [filterStatus, setFilterStatus] = useState<'all' | 'open' | 'in_progress' | 'resolved' | 'closed'>('all');
 
-  const tickets: AdminTicket[] = [
-    { id: '#T1001', user: 'John Doe', subject: 'Order #1234 not received', status: 'open' as const, priority: 'high' as const, created: '2 hours ago', messages: 1 },
-    { id: '#T1002', user: 'Jane Smith', subject: 'Payment issue on checkout', status: 'in_progress' as const, priority: 'urgent' as const, created: '5 hours ago', messages: 3 },
-    { id: '#T1003', user: 'Mike Johnson', subject: 'Product inquiry - Rolex Submariner', status: 'resolved' as const, priority: 'low' as const, created: '1 day ago', messages: 5 },
-    { id: '#T1004', user: 'Sarah Williams', subject: 'Request refund for order #1235', status: 'open' as const, priority: 'medium' as const, created: '3 hours ago', messages: 2 },
-  ];
+  const tickets: AdminTicket[] = [];
 
   const getStatusColor = (status: string) => {
     const colors = {

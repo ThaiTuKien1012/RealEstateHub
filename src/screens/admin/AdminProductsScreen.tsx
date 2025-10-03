@@ -6,7 +6,7 @@ import { useProducts } from '../../hooks/useProducts';
 
 export const AdminProductsScreen: React.FC = () => {
   const navigation = useNavigation<any>();
-  const { data: productsData, isLoading } = useProducts({ page: 1, pageSize: 50 });
+  const { data: productsData, isLoading } = useProducts();
 
   const products = productsData?.data || [];
 

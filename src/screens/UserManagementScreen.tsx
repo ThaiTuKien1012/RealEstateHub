@@ -1,19 +1,46 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput, Modal, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, Modal, Image, ActivityIndicator } from 'react-native';
 import tw from 'twrnc';
+import axios from 'axios';
+import { API_CONFIG } from '../config/api.config';
 import { AdminUser } from '../types';
 
 export const UserManagementScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
   const [filterRole, setFilterRole] = useState<'all' | 'customer' | 'admin' | 'vendor'>('all');
+  const [users, setUsers] = useState<AdminUser[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const users: AdminUser[] = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'customer' as const, orders: 12, spent: 15600, joined: '2024-03-15', avatar: 'https://ui-avatars.com/api/?name=John+Doe&background=3B82F6&color=fff' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'admin' as const, orders: 0, spent: 0, joined: '2024-01-10', avatar: 'https://ui-avatars.com/api/?name=Jane+Smith&background=10B981&color=fff' },
-    { id: 3, name: 'Mike Johnson', email: 'mike@example.com', role: 'vendor' as const, orders: 0, spent: 0, joined: '2024-06-20', avatar: 'https://ui-avatars.com/api/?name=Mike+Johnson&background=8B5CF6&color=fff' },
-    { id: 4, name: 'Sarah Williams', email: 'sarah@example.com', role: 'customer' as const, orders: 8, spent: 22400, joined: '2024-05-05', avatar: 'https://ui-avatars.com/api/?name=Sarah+Williams&background=F59E0B&color=fff' },
-  ];
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const token = (global as any).localStorage?.getItem('authToken');
+      const response = await axios.get(`${API_CONFIG.BASE_URL}/users`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.success) {
+        const apiUsers = response.data.data.map((u: any) => ({
+          id: u.id,
+          name: `${u.firstName} ${u.lastName}`,
+          email: u.email,
+          role: u.role || 'customer',
+          orders: 0,
+          spent: 0,
+          joined: new Date(u.createdAt).toISOString().split('T')[0],
+          avatar: `https://ui-avatars.com/api/?name=${u.firstName}+${u.lastName}&background=3B82F6&color=fff`
+        }));
+        setUsers(apiUsers);
+      }
+    } catch (error) {
+      console.error('Fetch users error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getRoleBadge = (role: string) => {
     const badges = {

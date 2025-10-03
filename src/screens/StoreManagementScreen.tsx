@@ -8,12 +8,7 @@ export const StoreManagementScreen: React.FC = () => {
   const [selectedStore, setSelectedStore] = useState<AdminStore | null>(null);
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'pending' | 'suspended'>('all');
 
-  const stores: AdminStore[] = [
-    { id: 1, name: 'Luxury Time Hub', owner: 'Mike Johnson', products: 45, sales: 128500, status: 'active' as const, rating: 4.8, logo: 'https://ui-avatars.com/api/?name=LTH&background=3B82F6&color=fff' },
-    { id: 2, name: 'Swiss Watch Co.', owner: 'Anna Brown', products: 32, sales: 95200, status: 'active' as const, rating: 4.6, logo: 'https://ui-avatars.com/api/?name=SWC&background=10B981&color=fff' },
-    { id: 3, name: 'Premium Timepieces', owner: 'David Lee', products: 18, sales: 0, status: 'pending' as const, rating: 0, logo: 'https://ui-avatars.com/api/?name=PT&background=F59E0B&color=fff' },
-    { id: 4, name: 'Classic Watch Store', owner: 'Emma Davis', products: 27, sales: 42300, status: 'suspended' as const, rating: 3.9, logo: 'https://ui-avatars.com/api/?name=CWS&background=EF4444&color=fff' },
-  ];
+  const stores: AdminStore[] = [];
 
   const getStatusBadge = (status: string) => {
     const badges = {
