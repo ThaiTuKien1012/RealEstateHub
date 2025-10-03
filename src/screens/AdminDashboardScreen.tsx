@@ -90,26 +90,26 @@ export const AdminDashboardScreen: React.FC = () => {
 
   return (
     <ScrollView style={tw`flex-1 bg-white`}>
-      <View style={tw`bg-white px-4 pt-12 pb-4 border-b border-gray-200`}>
-        <Text style={tw`text-3xl font-bold text-gray-900 tracking-wide mb-1`}>Dashboard</Text>
-        <Text style={tw`text-sm text-gray-500`}>Chào mừng, Administrator</Text>
+      <View style={tw`bg-white px-4 pt-12 pb-3`}>
+        <Text style={tw`text-3xl font-bold text-gray-900`}>Dashboard</Text>
+        <Text style={tw`text-xs text-gray-500 mt-1`}>Chào mừng, Administrator</Text>
       </View>
 
-      <View style={tw`px-4 py-6 bg-gray-50`}>
+      <View style={tw`px-4 py-4`}>
         <View style={tw`flex-row flex-wrap gap-3 mb-6`}>
           {stats.map((stat, index) => (
             <View
               key={index}
-              style={tw`flex-1 min-w-[45%] ${stat.color} rounded-2xl p-4`}
+              style={tw`flex-1 min-w-[45%] ${stat.color} rounded-2xl p-3.5`}
             >
-              <Text style={tw`text-white text-3xl mb-2`}>{stat.icon}</Text>
-              <Text style={tw`text-white text-2xl font-bold mb-1`}>{stat.value}</Text>
-              <Text style={tw`text-white text-sm opacity-90`}>{stat.label}</Text>
+              <Text style={tw`text-white text-2xl mb-1.5`}>{stat.icon}</Text>
+              <Text style={tw`text-white text-xl font-bold mb-0.5`}>{stat.value}</Text>
+              <Text style={tw`text-white text-xs opacity-90`}>{stat.label}</Text>
             </View>
           ))}
         </View>
 
-        <Text style={tw`text-xs uppercase tracking-wide text-gray-500 mb-3 px-1`}>
+        <Text style={tw`text-xs uppercase tracking-wider text-gray-500 mb-3`}>
           Thao tác nhanh
         </Text>
         <View style={tw`flex-row flex-wrap gap-3 mb-6`}>
@@ -117,9 +117,9 @@ export const AdminDashboardScreen: React.FC = () => {
             <TouchableOpacity
               key={index}
               onPress={() => navigation.navigate(action.route)}
-              style={tw`flex-1 min-w-[30%] bg-white rounded-2xl p-4 items-center border border-gray-200`}
+              style={tw`flex-1 min-w-[30%] bg-white rounded-2xl p-3.5 items-center border border-gray-200`}
             >
-              <Text style={tw`text-2xl mb-2`}>{action.icon}</Text>
+              <Text style={tw`text-xl mb-1.5`}>{action.icon}</Text>
               <Text style={tw`text-gray-900 text-xs font-medium text-center`}>
                 {action.label}
               </Text>
