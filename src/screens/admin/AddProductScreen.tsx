@@ -12,6 +12,7 @@ export const AddProductScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
   
   const [formData, setFormData] = useState({
     name: '',
@@ -31,12 +32,47 @@ export const AddProductScreen: React.FC = () => {
     isBestSeller: false,
   });
 
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Product name is required';
+    }
+
+    if (!formData.brand.trim()) {
+      newErrors.brand = 'Brand is required';
+    }
+
+    if (!formData.price.trim()) {
+      newErrors.price = 'Price is required';
+    } else if (isNaN(parseFloat(formData.price)) || parseFloat(formData.price) <= 0) {
+      newErrors.price = 'Price must be a valid number greater than 0';
+    }
+
+    if (!formData.category.trim()) {
+      newErrors.category = 'Category is required';
+    }
+
+    if (!formData.description.trim()) {
+      newErrors.description = 'Description is required';
+    }
+
+    if (!formData.stock.trim()) {
+      newErrors.stock = 'Stock quantity is required';
+    } else if (isNaN(parseInt(formData.stock)) || parseInt(formData.stock) < 0) {
+      newErrors.stock = 'Stock must be a valid number (0 or greater)';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async () => {
     setErrorMessage('');
     setSuccessMessage('');
     
-    if (!formData.name || !formData.brand || !formData.price) {
-      setErrorMessage('Please fill in required fields: Name, Brand, Price');
+    if (!validateForm()) {
+      setErrorMessage('Please fix the errors below');
       return;
     }
 
@@ -98,6 +134,13 @@ export const AddProductScreen: React.FC = () => {
 
   const updateField = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
   };
 
   return (
@@ -124,56 +167,74 @@ export const AddProductScreen: React.FC = () => {
           
           <Text style={tw`text-sm text-gray-700 mb-2`}>Product Name *</Text>
           <TextInput
-            style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
+            style={tw`bg-gray-50 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-xl px-4 py-3`}
             placeholder="Rolex Submariner Date"
+            placeholderTextColor="#9CA3AF"
             value={formData.name}
             onChangeText={(value) => updateField('name', value)}
           />
+          {errors.name && <Text style={tw`text-red-500 text-xs mt-1 mb-3`}>{errors.name}</Text>}
+          {!errors.name && <View style={tw`mb-4`} />}
 
           <Text style={tw`text-sm text-gray-700 mb-2`}>Brand *</Text>
           <TextInput
-            style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
+            style={tw`bg-gray-50 border ${errors.brand ? 'border-red-500' : 'border-gray-300'} rounded-xl px-4 py-3`}
             placeholder="Rolex"
+            placeholderTextColor="#9CA3AF"
             value={formData.brand}
             onChangeText={(value) => updateField('brand', value)}
           />
+          {errors.brand && <Text style={tw`text-red-500 text-xs mt-1 mb-3`}>{errors.brand}</Text>}
+          {!errors.brand && <View style={tw`mb-4`} />}
 
           <Text style={tw`text-sm text-gray-700 mb-2`}>Price (USD) *</Text>
           <TextInput
-            style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
+            style={tw`bg-gray-50 border ${errors.price ? 'border-red-500' : 'border-gray-300'} rounded-xl px-4 py-3`}
             placeholder="12500"
+            placeholderTextColor="#9CA3AF"
             value={formData.price}
             onChangeText={(value) => updateField('price', value)}
             keyboardType="decimal-pad"
           />
+          {errors.price && <Text style={tw`text-red-500 text-xs mt-1 mb-3`}>{errors.price}</Text>}
+          {!errors.price && <View style={tw`mb-4`} />}
 
-          <Text style={tw`text-sm text-gray-700 mb-2`}>Category</Text>
+          <Text style={tw`text-sm text-gray-700 mb-2`}>Category *</Text>
           <TextInput
-            style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
+            style={tw`bg-gray-50 border ${errors.category ? 'border-red-500' : 'border-gray-300'} rounded-xl px-4 py-3`}
             placeholder="Luxury, Sports, Dress..."
+            placeholderTextColor="#9CA3AF"
             value={formData.category}
             onChangeText={(value) => updateField('category', value)}
           />
+          {errors.category && <Text style={tw`text-red-500 text-xs mt-1 mb-3`}>{errors.category}</Text>}
+          {!errors.category && <View style={tw`mb-4`} />}
 
-          <Text style={tw`text-sm text-gray-700 mb-2`}>Stock Quantity</Text>
+          <Text style={tw`text-sm text-gray-700 mb-2`}>Stock Quantity *</Text>
           <TextInput
-            style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
+            style={tw`bg-gray-50 border ${errors.stock ? 'border-red-500' : 'border-gray-300'} rounded-xl px-4 py-3`}
             placeholder="10"
+            placeholderTextColor="#9CA3AF"
             value={formData.stock}
             onChangeText={(value) => updateField('stock', value)}
             keyboardType="number-pad"
           />
+          {errors.stock && <Text style={tw`text-red-500 text-xs mt-1 mb-3`}>{errors.stock}</Text>}
+          {!errors.stock && <View style={tw`mb-4`} />}
 
-          <Text style={tw`text-sm text-gray-700 mb-2`}>Description</Text>
+          <Text style={tw`text-sm text-gray-700 mb-2`}>Description *</Text>
           <TextInput
-            style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
+            style={tw`bg-gray-50 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-xl px-4 py-3`}
             placeholder="Product description..."
+            placeholderTextColor="#9CA3AF"
             value={formData.description}
             onChangeText={(value) => updateField('description', value)}
             multiline
             numberOfLines={4}
             textAlignVertical="top"
           />
+          {errors.description && <Text style={tw`text-red-500 text-xs mt-1 mb-3`}>{errors.description}</Text>}
+          {!errors.description && <View style={tw`mb-4`} />}
         </View>
 
         <View style={tw`bg-white rounded-2xl p-6 mb-6`}>
@@ -183,6 +244,7 @@ export const AddProductScreen: React.FC = () => {
           <TextInput
             style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
             placeholder="Automatic"
+            placeholderTextColor="#9CA3AF"
             value={formData.movement}
             onChangeText={(value) => updateField('movement', value)}
           />
@@ -191,6 +253,7 @@ export const AddProductScreen: React.FC = () => {
           <TextInput
             style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
             placeholder="Stainless Steel"
+            placeholderTextColor="#9CA3AF"
             value={formData.caseMaterial}
             onChangeText={(value) => updateField('caseMaterial', value)}
           />
@@ -199,6 +262,7 @@ export const AddProductScreen: React.FC = () => {
           <TextInput
             style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
             placeholder="40"
+            placeholderTextColor="#9CA3AF"
             value={formData.caseDiameter}
             onChangeText={(value) => updateField('caseDiameter', value)}
             keyboardType="number-pad"
@@ -208,6 +272,7 @@ export const AddProductScreen: React.FC = () => {
           <TextInput
             style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
             placeholder="Leather, Steel, Rubber..."
+            placeholderTextColor="#9CA3AF"
             value={formData.strapMaterial}
             onChangeText={(value) => updateField('strapMaterial', value)}
           />
@@ -216,6 +281,7 @@ export const AddProductScreen: React.FC = () => {
           <TextInput
             style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
             placeholder="300"
+            placeholderTextColor="#9CA3AF"
             value={formData.waterResistance}
             onChangeText={(value) => updateField('waterResistance', value)}
             keyboardType="number-pad"
@@ -225,6 +291,7 @@ export const AddProductScreen: React.FC = () => {
           <TextInput
             style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
             placeholder="Black, Blue, Silver..."
+            placeholderTextColor="#9CA3AF"
             value={formData.color}
             onChangeText={(value) => updateField('color', value)}
           />
@@ -237,6 +304,7 @@ export const AddProductScreen: React.FC = () => {
           <TextInput
             style={tw`bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 mb-4`}
             placeholder="https://example.com/img1.jpg, https://example.com/img2.jpg"
+            placeholderTextColor="#9CA3AF"
             value={formData.images}
             onChangeText={(value) => updateField('images', value)}
             multiline
