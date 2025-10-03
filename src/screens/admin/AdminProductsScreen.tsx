@@ -116,27 +116,20 @@ export const AdminProductsScreen: React.FC = () => {
   };
 
   return (
-    <View style={tw`flex-1 bg-gray-50`}>
-      <View style={tw`bg-blue-600 px-6 py-6`}>
-        <View style={tw`flex-row items-center justify-between`}>
-          <View style={tw`flex-1`}>
-            <Text style={tw`text-white text-3xl font-bold mb-1`}>Sản phẩm</Text>
-            <Text style={tw`text-blue-100 text-sm`}>Quản lý {totalProducts} sản phẩm</Text>
-          </View>
-          <View style={tw`bg-white bg-opacity-20 rounded-2xl p-3`}>
-            <Text style={tw`text-white text-3xl`}>▣</Text>
-          </View>
-        </View>
+    <View style={tw`flex-1 bg-white`}>
+      <View style={tw`bg-white px-4 pt-12 pb-4 border-b border-gray-200`}>
+        <Text style={tw`text-3xl font-bold text-gray-900 tracking-wide mb-1`}>Sản phẩm</Text>
+        <Text style={tw`text-sm text-gray-500`}>{totalProducts} sản phẩm</Text>
       </View>
 
-      <View style={tw`px-6 py-5 bg-gray-50`}>
+      <View style={tw`px-4 py-4 bg-white border-b border-gray-200`}>
         <TouchableOpacity
           onPress={() => navigation.navigate('AddProduct')}
-          style={tw`bg-green-600 py-4 rounded-2xl shadow-md`}
+          style={tw`bg-gray-900 py-4 rounded-xl`}
         >
           <View style={tw`flex-row items-center justify-center gap-2`}>
-            <Text style={tw`text-white text-2xl font-bold`}>+</Text>
-            <Text style={tw`text-white text-center font-bold text-lg`}>
+            <Text style={tw`text-white text-xl`}>+</Text>
+            <Text style={tw`text-white text-center font-semibold text-base`}>
               Thêm sản phẩm mới
             </Text>
           </View>

@@ -89,29 +89,27 @@ export const AdminDashboardScreen: React.FC = () => {
   };
 
   return (
-    <ScrollView style={tw`flex-1 bg-gray-50`}>
-      <View style={tw`bg-blue-600 px-6 py-6`}>
-        <Text style={tw`text-white text-3xl font-bold mb-1`}>Dashboard</Text>
-        <Text style={tw`text-blue-100 text-sm`}>Chào mừng, Administrator</Text>
+    <ScrollView style={tw`flex-1 bg-white`}>
+      <View style={tw`bg-white px-4 pt-12 pb-4 border-b border-gray-200`}>
+        <Text style={tw`text-3xl font-bold text-gray-900 tracking-wide mb-1`}>Dashboard</Text>
+        <Text style={tw`text-sm text-gray-500`}>Chào mừng, Administrator</Text>
       </View>
 
-      <View style={tw`px-4 py-6`}>
-        <View style={tw`flex-row flex-wrap gap-4 mb-6`}>
+      <View style={tw`px-4 py-6 bg-gray-50`}>
+        <View style={tw`flex-row flex-wrap gap-3 mb-6`}>
           {stats.map((stat, index) => (
             <View
               key={index}
-              style={tw`flex-1 min-w-[45%] ${stat.color} rounded-3xl p-5 shadow-sm`}
+              style={tw`flex-1 min-w-[45%] ${stat.color} rounded-2xl p-4`}
             >
-              <View style={tw`bg-white bg-opacity-20 rounded-xl w-12 h-12 items-center justify-center mb-3`}>
-                <Text style={tw`text-white text-2xl font-bold`}>{stat.icon}</Text>
-              </View>
-              <Text style={tw`text-white text-3xl font-bold mb-1`}>{stat.value}</Text>
+              <Text style={tw`text-white text-3xl mb-2`}>{stat.icon}</Text>
+              <Text style={tw`text-white text-2xl font-bold mb-1`}>{stat.value}</Text>
               <Text style={tw`text-white text-sm opacity-90`}>{stat.label}</Text>
             </View>
           ))}
         </View>
 
-        <Text style={tw`text-xs uppercase tracking-wide text-gray-500 mb-4 px-1 font-semibold`}>
+        <Text style={tw`text-xs uppercase tracking-wide text-gray-500 mb-3 px-1`}>
           Thao tác nhanh
         </Text>
         <View style={tw`flex-row flex-wrap gap-3 mb-6`}>
@@ -119,12 +117,10 @@ export const AdminDashboardScreen: React.FC = () => {
             <TouchableOpacity
               key={index}
               onPress={() => navigation.navigate(action.route)}
-              style={tw`flex-1 min-w-[30%] bg-white rounded-2xl p-5 items-center shadow-sm border border-gray-100`}
+              style={tw`flex-1 min-w-[30%] bg-white rounded-2xl p-4 items-center border border-gray-200`}
             >
-              <View style={tw`bg-blue-50 rounded-xl w-12 h-12 items-center justify-center mb-3`}>
-                <Text style={tw`text-blue-600 text-2xl font-bold`}>{action.icon}</Text>
-              </View>
-              <Text style={tw`text-gray-900 text-xs font-semibold text-center leading-4`}>
+              <Text style={tw`text-2xl mb-2`}>{action.icon}</Text>
+              <Text style={tw`text-gray-900 text-xs font-medium text-center`}>
                 {action.label}
               </Text>
             </TouchableOpacity>

@@ -13,21 +13,33 @@ export const AdminBottomTabNavigator: React.FC = () => {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#1a1a1a',
-        tabBarInactiveTintColor: '#9ca3af',
-        tabBarStyle: tw`bg-white border-t border-gray-200`,
+        tabBarInactiveTintColor: '#999999',
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontWeight: '400',
+          marginTop: 2,
+        },
+        tabBarStyle: {
+          height: 60,
+          borderTopWidth: 1,
+          borderTopColor: '#e5e5e5',
+          backgroundColor: '#ffffff',
+          paddingTop: 8,
+          paddingBottom: 8,
+        },
+        tabBarIconStyle: {
+          marginBottom: 0,
+        },
       }}
     >
       <Tab.Screen
         name="DashboardTab"
         component={AdminDashboardScreen}
         options={{
-          tabBarLabel: ({ focused }) => (
-            <Text style={tw`text-xs ${focused ? 'text-gray-900 font-semibold' : 'text-gray-500'}`}>
-              Dashboard
-            </Text>
-          ),
-          tabBarIcon: ({ focused }) => (
-            <Text style={tw`text-xl ${focused ? 'font-bold' : ''}`}>■</Text>
+          tabBarLabel: 'Dashboard',
+          tabBarIcon: ({ focused, color }) => (
+            <Text style={{ fontSize: 24, color }}>◧</Text>
           ),
         }}
       />
@@ -35,13 +47,9 @@ export const AdminBottomTabNavigator: React.FC = () => {
         name="ProductsTab"
         component={AdminProductsScreen}
         options={{
-          tabBarLabel: ({ focused }) => (
-            <Text style={tw`text-xs ${focused ? 'text-gray-900 font-semibold' : 'text-gray-500'}`}>
-              Products
-            </Text>
-          ),
-          tabBarIcon: ({ focused }) => (
-            <Text style={tw`text-xl ${focused ? 'font-bold' : ''}`}>▣</Text>
+          tabBarLabel: 'Products',
+          tabBarIcon: ({ focused, color }) => (
+            <Text style={{ fontSize: 24, color }}>◫</Text>
           ),
         }}
       />
@@ -49,13 +57,9 @@ export const AdminBottomTabNavigator: React.FC = () => {
         name="OrdersTab"
         component={OrderManagementScreen}
         options={{
-          tabBarLabel: ({ focused }) => (
-            <Text style={tw`text-xs ${focused ? 'text-gray-900 font-semibold' : 'text-gray-500'}`}>
-              Orders
-            </Text>
-          ),
-          tabBarIcon: ({ focused }) => (
-            <Text style={tw`text-xl ${focused ? 'font-bold' : ''}`}>◈</Text>
+          tabBarLabel: 'Orders',
+          tabBarIcon: ({ focused, color }) => (
+            <Text style={{ fontSize: 24, color }}>☰</Text>
           ),
         }}
       />
@@ -63,13 +67,9 @@ export const AdminBottomTabNavigator: React.FC = () => {
         name="UsersTab"
         component={UserManagementScreen}
         options={{
-          tabBarLabel: ({ focused }) => (
-            <Text style={tw`text-xs ${focused ? 'text-gray-900 font-semibold' : 'text-gray-500'}`}>
-              Users
-            </Text>
-          ),
-          tabBarIcon: ({ focused }) => (
-            <Text style={tw`text-xl ${focused ? 'font-bold' : ''}`}>◎</Text>
+          tabBarLabel: 'Users',
+          tabBarIcon: ({ focused, color }) => (
+            <Text style={{ fontSize: 24, color }}>◉</Text>
           ),
         }}
       />
@@ -77,13 +77,9 @@ export const AdminBottomTabNavigator: React.FC = () => {
         name="SettingsTab"
         component={AdminSettingsScreen}
         options={{
-          tabBarLabel: ({ focused }) => (
-            <Text style={tw`text-xs ${focused ? 'text-gray-900 font-semibold' : 'text-gray-500'}`}>
-              Settings
-            </Text>
-          ),
-          tabBarIcon: ({ focused }) => (
-            <Text style={tw`text-xl ${focused ? 'font-bold' : ''}`}>●</Text>
+          tabBarLabel: 'Settings',
+          tabBarIcon: ({ focused, color }) => (
+            <Text style={{ fontSize: 24, color }}>⚙</Text>
           ),
         }}
       />
