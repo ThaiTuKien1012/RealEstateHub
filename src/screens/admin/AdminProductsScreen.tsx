@@ -69,7 +69,7 @@ export const AdminProductsScreen: React.FC = () => {
               ${parseFloat(item.price).toLocaleString()}
             </Text>
             <Text style={tw`text-gray-500 text-xs mt-1`}>
-              Stock: {item.stock} | {item.isFeatured ? '⭐ Featured' : ''}
+              Stock: {item.stock} {item.isFeatured ? '| ★ Featured' : ''}
             </Text>
           </View>
         </View>
@@ -80,7 +80,7 @@ export const AdminProductsScreen: React.FC = () => {
             style={tw`flex-1 bg-blue-500 py-3 rounded-xl`}
             disabled={isDeleting}
           >
-            <Text style={tw`text-white text-center font-semibold`}>✏️ Sửa</Text>
+            <Text style={tw`text-white text-center font-semibold`}>+ Sửa</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -91,7 +91,7 @@ export const AdminProductsScreen: React.FC = () => {
             {isDeleting ? (
               <ActivityIndicator color="white" />
             ) : (
-              <Text style={tw`text-white text-center font-semibold`}>🗑️ Xóa</Text>
+              <Text style={tw`text-white text-center font-semibold`}>× Xóa</Text>
             )}
           </TouchableOpacity>
         </View>
@@ -112,7 +112,7 @@ export const AdminProductsScreen: React.FC = () => {
           style={tw`bg-yellow-600 py-4 rounded-xl mb-4`}
         >
           <Text style={tw`text-white text-center font-bold text-lg`}>
-            ➕ Add New Product
+            + Add New Product
           </Text>
         </TouchableOpacity>
       </View>

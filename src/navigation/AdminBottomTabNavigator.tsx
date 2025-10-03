@@ -27,7 +27,7 @@ export const AdminBottomTabNavigator: React.FC = () => {
             </Text>
           ),
           tabBarIcon: ({ focused }) => (
-            <Text style={tw`text-xl`}>{focused ? '📊' : '📈'}</Text>
+            <Text style={tw`text-xl ${focused ? 'font-bold' : ''}`}>■</Text>
           ),
         }}
       />
@@ -41,7 +41,7 @@ export const AdminBottomTabNavigator: React.FC = () => {
             </Text>
           ),
           tabBarIcon: ({ focused }) => (
-            <Text style={tw`text-xl`}>{focused ? '⌚' : '🕒'}</Text>
+            <Text style={tw`text-xl ${focused ? 'font-bold' : ''}`}>▣</Text>
           ),
         }}
       />
@@ -55,7 +55,7 @@ export const AdminBottomTabNavigator: React.FC = () => {
             </Text>
           ),
           tabBarIcon: ({ focused }) => (
-            <Text style={tw`text-xl`}>{focused ? '📦' : '📋'}</Text>
+            <Text style={tw`text-xl ${focused ? 'font-bold' : ''}`}>◈</Text>
           ),
         }}
       />
@@ -69,7 +69,7 @@ export const AdminBottomTabNavigator: React.FC = () => {
             </Text>
           ),
           tabBarIcon: ({ focused }) => (
-            <Text style={tw`text-xl`}>{focused ? '👥' : '👤'}</Text>
+            <Text style={tw`text-xl ${focused ? 'font-bold' : ''}`}>◎</Text>
           ),
         }}
       />
@@ -83,7 +83,7 @@ export const AdminBottomTabNavigator: React.FC = () => {
             </Text>
           ),
           tabBarIcon: ({ focused }) => (
-            <Text style={tw`text-xl`}>{focused ? '⚙️' : '⚙'}</Text>
+            <Text style={tw`text-xl ${focused ? 'font-bold' : ''}`}>●</Text>
           ),
         }}
       />

@@ -27,10 +27,10 @@ export const StoreManagementScreen: React.FC = () => {
   ];
 
   const storeActions = [
-    { label: 'View Products', icon: '⌚', color: 'bg-blue-500' },
-    { label: 'View Analytics', icon: '📊', color: 'bg-purple-500' },
-    { label: 'Approve Store', icon: '✅', color: 'bg-green-500' },
-    { label: 'Suspend Store', icon: '🚫', color: 'bg-red-500' },
+    { label: 'View Products', icon: '▣', color: 'bg-blue-500' },
+    { label: 'View Analytics', icon: '■', color: 'bg-purple-500' },
+    { label: 'Approve Store', icon: '✓', color: 'bg-green-500' },
+    { label: 'Suspend Store', icon: '×', color: 'bg-red-500' },
   ];
 
   return (
@@ -84,10 +84,10 @@ export const StoreManagementScreen: React.FC = () => {
                         <Text style={tw`text-xs font-semibold`}>{badge.text}</Text>
                       </View>
                     </View>
-                    <Text style={tw`text-gray-600 text-sm mb-1`}>👤 {store.owner}</Text>
+                    <Text style={tw`text-gray-600 text-sm mb-1`}>◎ {store.owner}</Text>
                     {store.status === 'active' && (
                       <Text style={tw`text-gray-900 font-semibold text-sm`}>
-                        ⭐ {store.rating} • {store.products} products
+                        ★ {store.rating} • {store.products} products
                       </Text>
                     )}
                   </View>

@@ -8,10 +8,10 @@ import { API_CONFIG } from '../config/api.config';
 export const AdminDashboardScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const [stats, setStats] = useState([
-    { label: 'Total Products', value: '0', icon: '⌚', color: 'bg-blue-500' },
-    { label: 'Total Orders', value: '0', icon: '📦', color: 'bg-green-500' },
-    { label: 'Total Users', value: '0', icon: '👥', color: 'bg-purple-500' },
-    { label: 'Total Revenue', value: '$0', icon: '💰', color: 'bg-yellow-500' },
+    { label: 'Total Products', value: '0', icon: '▣', color: 'bg-blue-500' },
+    { label: 'Total Orders', value: '0', icon: '◈', color: 'bg-green-500' },
+    { label: 'Total Users', value: '0', icon: '◎', color: 'bg-purple-500' },
+    { label: 'Total Revenue', value: '$0', icon: '$', color: 'bg-yellow-500' },
   ]);
   const [loading, setLoading] = useState(true);
 
@@ -38,10 +38,10 @@ export const AdminDashboardScreen: React.FC = () => {
       ) || 0;
 
       setStats([
-        { label: 'Total Products', value: totalProducts.toString(), icon: '⌚', color: 'bg-blue-500' },
-        { label: 'Total Orders', value: totalOrders.toLocaleString(), icon: '📦', color: 'bg-green-500' },
-        { label: 'Total Users', value: totalUsers.toLocaleString(), icon: '👥', color: 'bg-purple-500' },
-        { label: 'Total Revenue', value: `$${(totalRevenue / 1000).toFixed(0)}K`, icon: '💰', color: 'bg-yellow-500' },
+        { label: 'Total Products', value: totalProducts.toString(), icon: '▣', color: 'bg-blue-500' },
+        { label: 'Total Orders', value: totalOrders.toLocaleString(), icon: '◈', color: 'bg-green-500' },
+        { label: 'Total Users', value: totalUsers.toLocaleString(), icon: '◎', color: 'bg-purple-500' },
+        { label: 'Total Revenue', value: `$${(totalRevenue / 1000).toFixed(0)}K`, icon: '$', color: 'bg-yellow-500' },
       ]);
     } catch (error) {
       console.error('Fetch dashboard stats error:', error);
@@ -71,12 +71,12 @@ export const AdminDashboardScreen: React.FC = () => {
   };
 
   const quickActions = [
-    { label: 'Manage Products', icon: '⌚', route: 'ProductManagement' },
-    { label: 'Manage Orders', icon: '📦', route: 'OrderManagement' },
-    { label: 'Manage Users', icon: '👥', route: 'UserManagement' },
-    { label: 'Manage Stores', icon: '🏪', route: 'StoreManagement' },
-    { label: 'Support Tickets', icon: '💬', route: 'SupportManagement' },
-    { label: 'Analytics', icon: '📊', route: 'Analytics' },
+    { label: 'Manage Products', icon: '▣', route: 'ProductManagement' },
+    { label: 'Manage Orders', icon: '◈', route: 'OrderManagement' },
+    { label: 'Manage Users', icon: '◎', route: 'UserManagement' },
+    { label: 'Manage Stores', icon: '◇', route: 'StoreManagement' },
+    { label: 'Support Tickets', icon: '◐', route: 'SupportManagement' },
+    { label: 'Analytics', icon: '■', route: 'Analytics' },
   ];
 
   const getStatusColor = (status: string) => {

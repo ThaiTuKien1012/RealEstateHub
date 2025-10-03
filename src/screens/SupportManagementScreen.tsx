@@ -39,10 +39,10 @@ export const SupportManagementScreen: React.FC = () => {
   ];
 
   const quickActions = [
-    { label: 'Assign to Me', icon: '👤', color: 'bg-blue-500' },
-    { label: 'Mark In Progress', icon: '⏳', color: 'bg-orange-500' },
-    { label: 'Mark Resolved', icon: '✅', color: 'bg-green-500' },
-    { label: 'Close Ticket', icon: '🔒', color: 'bg-gray-500' },
+    { label: 'Assign to Me', icon: '◎', color: 'bg-blue-500' },
+    { label: 'Mark In Progress', icon: '◐', color: 'bg-orange-500' },
+    { label: 'Mark Resolved', icon: '✓', color: 'bg-green-500' },
+    { label: 'Close Ticket', icon: '●', color: 'bg-gray-500' },
   ];
 
   return (
@@ -100,7 +100,7 @@ export const SupportManagementScreen: React.FC = () => {
               </View>
               <View style={tw`flex-row items-center justify-between pt-3 border-t border-gray-100`}>
                 <Text style={tw`text-gray-600 text-sm`}>
-                  💬 {ticket.messages} messages • {ticket.created}
+                  ◐ {ticket.messages} messages • {ticket.created}
                 </Text>
                 <Text style={tw`text-blue-600 font-semibold text-sm`}>View →</Text>
               </View>

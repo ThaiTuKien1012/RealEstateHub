@@ -59,10 +59,10 @@ export const UserManagementScreen: React.FC = () => {
   ];
 
   const userActions = [
-    { label: 'View Orders', icon: '📦', color: 'bg-blue-500' },
-    { label: 'Send Email', icon: '✉️', color: 'bg-purple-500' },
-    { label: 'Edit User', icon: '✏️', color: 'bg-green-500' },
-    { label: 'Suspend Account', icon: '🚫', color: 'bg-red-500' },
+    { label: 'View Orders', icon: '◈', color: 'bg-blue-500' },
+    { label: 'Send Email', icon: '◐', color: 'bg-purple-500' },
+    { label: 'Edit User', icon: '+', color: 'bg-green-500' },
+    { label: 'Suspend Account', icon: '×', color: 'bg-red-500' },
   ];
 
   return (
