@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, Switch } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useQueryClient } from '@tanstack/react-query';
 import tw from 'twrnc';
 import axios from 'axios';
 import { API_CONFIG } from '../../config/api.config';
 
 export const AddProductScreen: React.FC = () => {
   const navigation = useNavigation();
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -77,6 +79,10 @@ export const AddProductScreen: React.FC = () => {
 
       if (response.data.success) {
         setSuccessMessage('✅ Product added successfully!');
+        
+        queryClient.invalidateQueries({ queryKey: ['products'] });
+        queryClient.invalidateQueries({ queryKey: ['featured-products'] });
+        queryClient.invalidateQueries({ queryKey: ['bestsellers'] });
         
         setTimeout(() => {
           navigation.goBack();
