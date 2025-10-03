@@ -19,6 +19,7 @@ import {
 } from '../screens';
 import { AdminProductsScreen } from '../screens/admin/AdminProductsScreen';
 import { AddProductScreen } from '../screens/admin/AddProductScreen';
+import { EditProductScreen } from '../screens/admin/EditProductScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -133,6 +134,11 @@ export const AppNavigator: React.FC = () => {
           name="AddProduct" 
           component={AddProductScreen}
           options={{ title: 'Add New Product' }}
+        />
+        <Stack.Screen 
+          name="EditProduct" 
+          component={EditProductScreen}
+          options={{ title: 'Edit Product' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
