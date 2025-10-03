@@ -17,35 +17,29 @@ export const AdminProductsScreen: React.FC = () => {
   const totalProducts = (productsData as any)?.pagination?.total || 0;
 
   const handleDelete = async (id: number, name: string) => {
-    Alert.alert(
-      'Xóa sản phẩm',
-      `Bạn có chắc muốn xóa "${name}"?`,
-      [
-        { text: 'Hủy', style: 'cancel' },
-        {
-          text: 'Xóa',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              setDeletingId(id);
-              const token = (global as any).localStorage?.getItem('authToken');
-              
-              await axios.delete(`${API_CONFIG.BASE_URL}/watches/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-              });
+    const confirmed = (window as any).confirm(`Bạn có chắc muốn xóa "${name}"?`);
+    
+    if (!confirmed) return;
 
-              queryClient.invalidateQueries({ queryKey: ['products'] });
-              
-              Alert.alert('Thành công', 'Đã xóa sản phẩm');
-            } catch (error: any) {
-              Alert.alert('Lỗi', error.response?.data?.error?.message || 'Không thể xóa sản phẩm');
-            } finally {
-              setDeletingId(null);
-            }
-          }
-        }
-      ]
-    );
+    try {
+      setDeletingId(id);
+      const token = (global as any).localStorage?.getItem('authToken');
+      
+      console.log('🗑️ Deleting product:', id);
+      
+      await axios.delete(`${API_CONFIG.BASE_URL}/watches/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      
+      (window as any).alert('✅ Đã xóa sản phẩm thành công!');
+    } catch (error: any) {
+      console.error('Delete error:', error);
+      (window as any).alert('❌ Lỗi: ' + (error.response?.data?.error?.message || 'Không thể xóa sản phẩm'));
+    } finally {
+      setDeletingId(null);
+    }
   };
 
   const renderProduct = ({ item }: any) => {
