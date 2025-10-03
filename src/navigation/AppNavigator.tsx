@@ -12,7 +12,6 @@ import {
   OrderSuccessScreen, 
   CompareScreen,
   AdminDashboardScreen,
-  ProductManagementScreen,
   OrderManagementScreen,
   UserManagementScreen,
   StoreManagementScreen,
@@ -92,7 +91,7 @@ export const AppNavigator: React.FC = () => {
           name="ProductManagement" 
           options={{ title: 'Manage Products' }}
         >
-          {() => <AdminRouteGuard><ProductManagementScreen /></AdminRouteGuard>}
+          {() => <AdminRouteGuard><AdminProductsScreen /></AdminRouteGuard>}
         </Stack.Screen>
         <Stack.Screen 
           name="OrderManagement" 

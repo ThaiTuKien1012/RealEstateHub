@@ -10,7 +10,6 @@ export { WishlistScreen } from './WishlistScreen';
 export { OrderSuccessScreen } from './OrderSuccessScreen';
 export { CompareScreen } from './CompareScreen';
 export { AdminDashboardScreen } from './AdminDashboardScreen';
-export { ProductManagementScreen } from './ProductManagementScreen';
 export { OrderManagementScreen } from './OrderManagementScreen';
 export { UserManagementScreen } from './UserManagementScreen';
 export { StoreManagementScreen } from './StoreManagementScreen';
