@@ -1,23 +1,74 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
+import axios from 'axios';
+import { API_CONFIG } from '../config/api.config';
 
 export const AdminDashboardScreen: React.FC = () => {
   const navigation = useNavigation<any>();
+  const [stats, setStats] = useState([
+    { label: 'Total Products', value: '0', icon: '⌚', color: 'bg-blue-500' },
+    { label: 'Total Orders', value: '0', icon: '📦', color: 'bg-green-500' },
+    { label: 'Total Users', value: '0', icon: '👥', color: 'bg-purple-500' },
+    { label: 'Total Revenue', value: '$0', icon: '💰', color: 'bg-yellow-500' },
+  ]);
+  const [loading, setLoading] = useState(true);
 
-  const stats = [
-    { label: 'Total Products', value: '156', icon: '⌚', color: 'bg-blue-500' },
-    { label: 'Total Orders', value: '1,247', icon: '📦', color: 'bg-green-500' },
-    { label: 'Total Users', value: '3,892', icon: '👥', color: 'bg-purple-500' },
-    { label: 'Total Revenue', value: '$284K', icon: '💰', color: 'bg-yellow-500' },
-  ];
+  useEffect(() => {
+    fetchDashboardStats();
+  }, []);
 
-  const recentOrders = [
-    { id: '#1234', customer: 'John Doe', total: '$2,500', status: 'pending' },
-    { id: '#1235', customer: 'Jane Smith', total: '$5,800', status: 'delivered' },
-    { id: '#1236', customer: 'Mike Johnson', total: '$3,200', status: 'processing' },
-  ];
+  const fetchDashboardStats = async () => {
+    try {
+      const token = (global as any).localStorage?.getItem('authToken');
+      
+      const [productsRes, ordersRes, usersRes] = await Promise.all([
+        axios.get(`${API_CONFIG.BASE_URL}/watches`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${API_CONFIG.BASE_URL}/orders`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${API_CONFIG.BASE_URL}/users`, { headers: { Authorization: `Bearer ${token}` } })
+      ]);
+
+      const totalProducts = (productsRes.data as any)?.pagination?.total || 0;
+      const totalOrders = ordersRes.data?.data?.length || 0;
+      const totalUsers = usersRes.data?.data?.length || 0;
+      
+      const totalRevenue = ordersRes.data?.data?.reduce((sum: number, order: any) => 
+        sum + parseFloat(order.total || 0), 0
+      ) || 0;
+
+      setStats([
+        { label: 'Total Products', value: totalProducts.toString(), icon: '⌚', color: 'bg-blue-500' },
+        { label: 'Total Orders', value: totalOrders.toLocaleString(), icon: '📦', color: 'bg-green-500' },
+        { label: 'Total Users', value: totalUsers.toLocaleString(), icon: '👥', color: 'bg-purple-500' },
+        { label: 'Total Revenue', value: `$${(totalRevenue / 1000).toFixed(0)}K`, icon: '💰', color: 'bg-yellow-500' },
+      ]);
+    } catch (error) {
+      console.error('Fetch dashboard stats error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [recentOrders, setRecentOrders] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchRecentOrders();
+  }, []);
+
+  const fetchRecentOrders = async () => {
+    try {
+      const token = (global as any).localStorage?.getItem('authToken');
+      const response = await axios.get(`${API_CONFIG.BASE_URL}/orders?limit=3`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.success) {
+        setRecentOrders(response.data.data.slice(0, 3));
+      }
+    } catch (error) {
+      console.error('Fetch recent orders error:', error);
+    }
+  };
 
   const quickActions = [
     { label: 'Manage Products', icon: '⌚', route: 'ProductManagement' },
@@ -80,24 +131,30 @@ export const AdminDashboardScreen: React.FC = () => {
           Recent Orders
         </Text>
         <View style={tw`bg-white rounded-2xl overflow-hidden`}>
-          {recentOrders.map((order, index) => (
-            <TouchableOpacity
-              key={order.id}
-              onPress={() => navigation.navigate('OrderManagement')}
-              style={tw`p-4 ${index !== recentOrders.length - 1 ? 'border-b border-gray-100' : ''}`}
-            >
-              <View style={tw`flex-row items-center justify-between mb-2`}>
-                <Text style={tw`font-bold text-gray-900`}>{order.id}</Text>
-                <Text style={tw`text-gray-900 font-semibold`}>{order.total}</Text>
-              </View>
-              <View style={tw`flex-row items-center justify-between`}>
-                <Text style={tw`text-gray-600`}>{order.customer}</Text>
-                <View style={tw`px-3 py-1 rounded-full ${getStatusColor(order.status)}`}>
-                  <Text style={tw`text-xs font-semibold capitalize`}>{order.status}</Text>
+          {recentOrders.length > 0 ? (
+            recentOrders.map((order, index) => (
+              <TouchableOpacity
+                key={order.id}
+                onPress={() => navigation.navigate('OrderManagement')}
+                style={tw`p-4 ${index !== recentOrders.length - 1 ? 'border-b border-gray-100' : ''}`}
+              >
+                <View style={tw`flex-row items-center justify-between mb-2`}>
+                  <Text style={tw`font-bold text-gray-900`}>#{order.id}</Text>
+                  <Text style={tw`text-gray-900 font-semibold`}>${parseFloat(order.total).toLocaleString()}</Text>
                 </View>
-              </View>
-            </TouchableOpacity>
-          ))}
+                <View style={tw`flex-row items-center justify-between`}>
+                  <Text style={tw`text-gray-600`}>{order.userId}</Text>
+                  <View style={tw`px-3 py-1 rounded-full ${getStatusColor(order.status)}`}>
+                    <Text style={tw`text-xs font-semibold capitalize`}>{order.status}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <View style={tw`p-4`}>
+              <Text style={tw`text-gray-500 text-center`}>No recent orders</Text>
+            </View>
+          )}
         </View>
       </View>
     </ScrollView>
