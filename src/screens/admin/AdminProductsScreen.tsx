@@ -9,6 +9,7 @@ export const AdminProductsScreen: React.FC = () => {
   const { data: productsData, isLoading } = useProducts();
 
   const products = productsData?.data || [];
+  const totalProducts = (productsData as any)?.pagination?.total || 0;
 
   const renderProduct = ({ item }: any) => {
     const imageUrl = Array.isArray(item.images) && item.images.length > 0 
@@ -39,7 +40,7 @@ export const AdminProductsScreen: React.FC = () => {
     <View style={tw`flex-1 bg-gray-50`}>
       <View style={tw`bg-white px-6 py-4 border-b border-gray-200`}>
         <Text style={tw`text-2xl font-bold`}>Products Management</Text>
-        <Text style={tw`text-gray-600 mt-1`}>{products.length} products</Text>
+        <Text style={tw`text-gray-600 mt-1`}>{totalProducts} products</Text>
       </View>
 
       <View style={tw`px-6 py-4`}>
