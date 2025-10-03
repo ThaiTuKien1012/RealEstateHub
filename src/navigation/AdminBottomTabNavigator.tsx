@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text } from 'react-native';
 import tw from 'twrnc';
 import { AdminDashboardScreen, OrderManagementScreen, UserManagementScreen, AdminSettingsScreen } from '../screens';
+import { AdminProductsScreen } from '../screens/admin/AdminProductsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +28,20 @@ export const AdminBottomTabNavigator: React.FC = () => {
           ),
           tabBarIcon: ({ focused }) => (
             <Text style={tw`text-xl`}>{focused ? '📊' : '📈'}</Text>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="ProductsTab"
+        component={AdminProductsScreen}
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <Text style={tw`text-xs ${focused ? 'text-gray-900 font-semibold' : 'text-gray-500'}`}>
+              Products
+            </Text>
+          ),
+          tabBarIcon: ({ focused }) => (
+            <Text style={tw`text-xl`}>{focused ? '⌚' : '🕒'}</Text>
           ),
         }}
       />

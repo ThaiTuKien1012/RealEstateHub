@@ -18,6 +18,8 @@ import {
   StoreManagementScreen,
   SupportManagementScreen
 } from '../screens';
+import { AdminProductsScreen } from '../screens/admin/AdminProductsScreen';
+import { AddProductScreen } from '../screens/admin/AddProductScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -122,6 +124,17 @@ export const AppNavigator: React.FC = () => {
         >
           {() => <AdminRouteGuard><AdminDashboardScreen /></AdminRouteGuard>}
         </Stack.Screen>
+        <Stack.Screen 
+          name="AdminProducts" 
+          options={{ title: 'Manage Products' }}
+        >
+          {() => <AdminRouteGuard><AdminProductsScreen /></AdminRouteGuard>}
+        </Stack.Screen>
+        <Stack.Screen 
+          name="AddProduct" 
+          component={AddProductScreen}
+          options={{ title: 'Add New Product' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
