@@ -77,13 +77,32 @@ export const productsApi = {
     page: number = 1,
     pageSize: number = 12
   ): Promise<PaginatedResponse<Product>> => {
-    const response = await api.get('/watches/search', {
-      params: {
-        ...filters,
-        page,
-        pageSize,
-      },
+    const params: any = {
+      page,
+      limit: pageSize,
+    };
+
+    // Map frontend filters to backend params
+    if (filters.searchQuery) {
+      params.search = filters.searchQuery;
+    }
+    
+    if (filters.brands && filters.brands.length > 0) {
+      params.brand = filters.brands[0]; // Backend only supports single brand for now
+    }
+    
+    if (filters.priceRange) {
+      params.minPrice = filters.priceRange[0];
+      params.maxPrice = filters.priceRange[1];
+    }
+
+    console.log('🔍 Search API params:', params);
+
+    const response = await api.get('/watches', {
+      params,
     });
+
+    console.log('📦 Search API response:', response.data);
 
     return response.data;
   },
