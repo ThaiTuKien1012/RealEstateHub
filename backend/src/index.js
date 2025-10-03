@@ -1,13 +1,18 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import routes from './routes/index.js';
 import { seedDatabase } from './utils/seed.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors({
   origin: '*',
@@ -17,16 +22,15 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.json({
-    success: true,
-    message: 'WatchTime API - Luxury Watch Marketplace',
-    version: '1.0.0',
-    docs: '/api-docs'
-  });
-});
-
 app.use('/api', routes);
+
+app.use(express.static(path.join(__dirname, '../../dist')));
+
+app.get('*', (req, res) => {
+  if (!req.url.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../../dist/index.html'));
+  }
+});
 
 app.use((err, req, res, next) => {
   console.error('Error:', err);

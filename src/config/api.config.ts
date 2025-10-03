@@ -7,9 +7,9 @@ const getApiUrl = () => {
     const win = (global as any).window;
     const hostname = win.location.hostname;
     const protocol = win.location.protocol;
-    return `${protocol}//${hostname}:3000/api`;
+    return `${protocol}//${hostname}/api`;
   }
-  return 'http://localhost:3000/api';
+  return 'http://localhost:5000/api';
 };
 
 export const API_CONFIG = {
