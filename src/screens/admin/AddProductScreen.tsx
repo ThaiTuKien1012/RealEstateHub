@@ -8,6 +8,8 @@ import { API_CONFIG } from '../../config/api.config';
 export const AddProductScreen: React.FC = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   
   const [formData, setFormData] = useState({
     name: '',
@@ -28,8 +30,11 @@ export const AddProductScreen: React.FC = () => {
   });
 
   const handleSubmit = async () => {
+    setErrorMessage('');
+    setSuccessMessage('');
+    
     if (!formData.name || !formData.brand || !formData.price) {
-      Alert.alert('Error', 'Please fill in required fields: Name, Brand, Price');
+      setErrorMessage('Please fill in required fields: Name, Brand, Price');
       return;
     }
 
@@ -71,16 +76,15 @@ export const AddProductScreen: React.FC = () => {
       );
 
       if (response.data.success) {
-        Alert.alert('Success', 'Product added successfully!', [
-          {
-            text: 'OK',
-            onPress: () => navigation.goBack()
-          }
-        ]);
+        setSuccessMessage('✅ Product added successfully!');
+        
+        setTimeout(() => {
+          navigation.goBack();
+        }, 1500);
       }
     } catch (error: any) {
       console.error('Add product error:', error);
-      Alert.alert('Error', error?.response?.data?.error?.message || 'Failed to add product');
+      setErrorMessage(error?.response?.data?.error?.message || 'Failed to add product');
     } finally {
       setLoading(false);
     }
@@ -95,6 +99,18 @@ export const AddProductScreen: React.FC = () => {
       <View style={tw`bg-white px-6 py-4 border-b border-gray-200`}>
         <Text style={tw`text-2xl font-bold`}>Add New Product</Text>
       </View>
+
+      {successMessage && (
+        <View style={tw`bg-green-50 border border-green-200 mx-6 mt-4 px-4 py-3 rounded-xl`}>
+          <Text style={tw`text-green-800 font-semibold text-center`}>{successMessage}</Text>
+        </View>
+      )}
+
+      {errorMessage && (
+        <View style={tw`bg-red-50 border border-red-200 mx-6 mt-4 px-4 py-3 rounded-xl`}>
+          <Text style={tw`text-red-800 font-semibold text-center`}>{errorMessage}</Text>
+        </View>
+      )}
 
       <ScrollView style={tw`flex-1 px-6 py-4`}>
         <View style={tw`bg-white rounded-2xl p-6 mb-6`}>
