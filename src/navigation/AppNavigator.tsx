@@ -23,9 +23,39 @@ import { EditProductScreen } from '../screens/admin/EditProductScreen';
 
 const Stack = createNativeStackNavigator();
 
+const linking: any = {
+  prefixes: [],
+  config: {
+    screens: {
+      Main: {
+        screens: {
+          HomeTab: 'home',
+          CatalogTab: 'shop',
+          CartTab: 'cart',
+          ProfileTab: 'profile',
+          DashboardTab: 'admin/dashboard',
+          ProductsTab: 'admin/products',
+          OrdersTab: 'admin/orders',
+          UsersTab: 'admin/users',
+          SettingsTab: 'admin/settings',
+        },
+      },
+      ProductDetail: 'product/:id',
+      Checkout: 'checkout',
+      Auth: 'auth',
+      EditProfile: 'profile/edit',
+      Wishlist: 'wishlist',
+      OrderSuccess: 'order/success',
+      Compare: 'compare',
+      AddProduct: 'admin/product/add',
+      EditProduct: 'admin/product/edit',
+    },
+  },
+};
+
 export const AppNavigator: React.FC = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <Stack.Navigator
         screenOptions={{
           headerShown: true,
