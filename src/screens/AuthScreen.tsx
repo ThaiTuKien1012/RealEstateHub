@@ -87,44 +87,33 @@ export const AuthScreen: React.FC = () => {
               accessibilityLabel="Password"
             />
 
-          <TouchableOpacity
-            onPress={async () => {
-              try {
-                await login('admin@watchshop.com', 'Admin123!@#');
-                navigation.navigate('Main', { screen: 'HomeTab' });
-              } catch (error) {
-                Alert.alert('Error', 'Admin login failed');
-              }
-            }}
-            style={tw`bg-blue-600 py-4 rounded-xl mb-3`}
-            disabled={isLoading}
-            accessibilityLabel="Quick admin login"
-            accessibilityRole="button"
-          >
-            <Text style={tw`text-white text-center font-bold text-lg`}>
-              👨‍💼 Login as ADMIN
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={tw`bg-gray-900 py-4 rounded-xl mb-4`}
+              disabled={isLoading}
+              accessibilityLabel={isLoginMode ? 'Sign in' : 'Create account'}
+              accessibilityRole="button"
+            >
+              <Text style={tw`text-white text-center font-bold text-base`}>
+                {isLoading ? 'Đang tải...' : (isLoginMode ? 'Đăng nhập' : 'Tạo tài khoản')}
+              </Text>
+            </TouchableOpacity>
+          </View>
 
           <TouchableOpacity
-            onPress={async () => {
-              try {
-                await login('demo1@watchshop.com', 'Demo123!@#');
-                navigation.navigate('Main', { screen: 'HomeTab' });
-              } catch (error) {
-                Alert.alert('Error', 'Customer login failed');
-              }
-            }}
-            style={tw`bg-green-600 py-4 rounded-xl mb-4`}
-            disabled={isLoading}
-            accessibilityLabel="Quick customer login"
+            onPress={() => setIsLoginMode(!isLoginMode)}
+            style={tw`mt-4`}
+            accessibilityLabel={isLoginMode ? 'Switch to register' : 'Switch to login'}
             accessibilityRole="button"
           >
-            <Text style={tw`text-white text-center font-bold text-lg`}>
-              👤 Login as CUSTOMER
+            <Text style={tw`text-gray-600 text-center`}>
+              {isLoginMode ? (
+                <>Chưa có tài khoản? <Text style={tw`text-gray-900 font-bold`}>Đăng ký</Text></>
+              ) : (
+                <>Đã có tài khoản? <Text style={tw`text-gray-900 font-bold`}>Đăng nhập</Text></>
+              )}
             </Text>
           </TouchableOpacity>
-        </View>
         </View>
       </ScrollView>
     </View>
