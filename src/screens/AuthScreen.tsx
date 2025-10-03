@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
 import { useAuth } from '../hooks/useAuth';
@@ -11,12 +11,14 @@ export const AuthScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async () => {
     console.log('🔐 Login attempt:', { email, password: '***', isLoginMode });
+    setErrorMessage('');
     
     if (!email || !password) {
-      Alert.alert('Error', 'Please enter email and password');
+      setErrorMessage('Vui lòng nhập email và mật khẩu');
       return;
     }
 
@@ -25,20 +27,19 @@ export const AuthScreen: React.FC = () => {
         console.log('📤 Calling login API...');
         await login(email, password);
         console.log('✅ Login successful!');
-        Alert.alert('Success', 'Logged in successfully!');
         navigation.navigate('Main', { screen: 'HomeTab' });
       } else {
         console.log('📤 Calling register API...');
         await register(email, password, name);
         console.log('✅ Register successful!');
-        Alert.alert('Success', 'Account created successfully!');
         navigation.navigate('Main', { screen: 'HomeTab' });
       }
     } catch (error: any) {
       console.error('❌ Auth error:', error);
       console.error('❌ Error message:', error?.message);
       console.error('❌ Error response:', error?.response?.data);
-      Alert.alert('Error', error?.response?.data?.message || error?.message || 'Authentication failed. Please try again.');
+      const errorMsg = error?.response?.data?.error?.message || error?.response?.data?.message || error?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
+      setErrorMessage(errorMsg);
     }
   };
 
@@ -79,13 +80,22 @@ export const AuthScreen: React.FC = () => {
             />
 
             <TextInput
-              style={tw`bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 mb-6`}
+              style={tw`bg-gray-50 border ${errorMessage ? 'border-red-500' : 'border-gray-200'} rounded-xl px-4 py-3 ${errorMessage ? 'mb-2' : 'mb-6'}`}
               placeholder="Password"
               value={password}
-              onChangeText={setPassword}
+              onChangeText={(text) => {
+                setPassword(text);
+                setErrorMessage('');
+              }}
               secureTextEntry
               accessibilityLabel="Password"
             />
+
+            {errorMessage ? (
+              <View style={tw`mb-4 px-1`}>
+                <Text style={tw`text-red-600 text-sm`}>⚠️ {errorMessage}</Text>
+              </View>
+            ) : null}
 
             <TouchableOpacity
               onPress={handleSubmit}
