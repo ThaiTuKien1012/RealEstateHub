@@ -48,44 +48,66 @@ export const AdminProductsScreen: React.FC = () => {
       : 'https://via.placeholder.com/150';
 
     const isDeleting = deletingId === item.id;
+    const stockStatus = item.stock === 0 ? 'out' : item.stock < 10 ? 'low' : 'in';
 
     return (
-      <View style={tw`bg-white rounded-2xl p-4 mb-3`}>
-        <View style={tw`flex-row`}>
-          <Image
-            source={{ uri: imageUrl }}
-            style={tw`w-20 h-20 rounded-xl`}
-          />
+      <View style={tw`bg-white rounded-3xl p-5 mb-4 border border-gray-100 shadow-sm`}>
+        <View style={tw`flex-row items-start`}>
+          <View style={tw`relative`}>
+            <Image
+              source={{ uri: imageUrl }}
+              style={tw`w-24 h-24 rounded-2xl`}
+            />
+            {item.isFeatured && (
+              <View style={tw`absolute -top-2 -right-2 bg-yellow-500 rounded-full w-7 h-7 items-center justify-center`}>
+                <Text style={tw`text-white text-sm font-bold`}>★</Text>
+              </View>
+            )}
+          </View>
+          
           <View style={tw`flex-1 ml-4`}>
-            <Text style={tw`font-bold text-base`} numberOfLines={1}>{item.name}</Text>
-            <Text style={tw`text-gray-600 text-sm`}>{item.brand}</Text>
-            <Text style={tw`text-yellow-600 font-bold text-base mt-1`}>
-              ${parseFloat(item.price).toLocaleString()}
-            </Text>
-            <Text style={tw`text-gray-500 text-xs mt-1`}>
-              Stock: {item.stock} {item.isFeatured ? '| ★ Featured' : ''}
-            </Text>
+            <Text style={tw`font-bold text-lg text-gray-900 mb-1`} numberOfLines={1}>{item.name}</Text>
+            <Text style={tw`text-gray-500 text-sm mb-2`}>{item.brand}</Text>
+            
+            <View style={tw`flex-row items-center gap-3 mb-2`}>
+              <Text style={tw`text-blue-600 font-bold text-xl`}>
+                ${parseFloat(item.price).toLocaleString()}
+              </Text>
+              
+              <View style={tw`px-2 py-1 rounded-lg ${
+                stockStatus === 'out' ? 'bg-red-50' : 
+                stockStatus === 'low' ? 'bg-orange-50' : 'bg-green-50'
+              }`}>
+                <Text style={tw`text-xs font-semibold ${
+                  stockStatus === 'out' ? 'text-red-600' : 
+                  stockStatus === 'low' ? 'text-orange-600' : 'text-green-600'
+                }`}>
+                  {stockStatus === 'out' ? 'Hết hàng' : 
+                   stockStatus === 'low' ? `Còn ${item.stock}` : `${item.stock} sản phẩm`}
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
 
-        <View style={tw`flex-row gap-2 mt-3`}>
+        <View style={tw`flex-row gap-3 mt-4 pt-4 border-t border-gray-100`}>
           <TouchableOpacity
             onPress={() => navigation.navigate('EditProduct', { product: item })}
-            style={tw`flex-1 bg-blue-500 py-3 rounded-xl`}
+            style={tw`flex-1 bg-blue-500 py-3.5 rounded-xl flex-row items-center justify-center gap-2`}
             disabled={isDeleting}
           >
-            <Text style={tw`text-white text-center font-semibold`}>+ Sửa</Text>
+            <Text style={tw`text-white text-center font-semibold text-base`}>Sửa</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => handleDelete(item.id, item.name)}
-            style={tw`flex-1 ${isDeleting ? 'bg-gray-400' : 'bg-red-500'} py-3 rounded-xl`}
+            style={tw`flex-1 ${isDeleting ? 'bg-gray-300' : 'bg-red-500'} py-3.5 rounded-xl flex-row items-center justify-center gap-2`}
             disabled={isDeleting}
           >
             {isDeleting ? (
-              <ActivityIndicator color="white" />
+              <ActivityIndicator color="white" size="small" />
             ) : (
-              <Text style={tw`text-white text-center font-semibold`}>× Xóa</Text>
+              <Text style={tw`text-white text-center font-semibold text-base`}>Xóa</Text>
             )}
           </TouchableOpacity>
         </View>
@@ -95,19 +117,29 @@ export const AdminProductsScreen: React.FC = () => {
 
   return (
     <View style={tw`flex-1 bg-gray-50`}>
-      <View style={tw`bg-white px-6 py-4 border-b border-gray-200`}>
-        <Text style={tw`text-2xl font-bold`}>Products Management</Text>
-        <Text style={tw`text-gray-600 mt-1`}>{totalProducts} products</Text>
+      <View style={tw`bg-blue-600 px-6 py-6`}>
+        <View style={tw`flex-row items-center justify-between`}>
+          <View style={tw`flex-1`}>
+            <Text style={tw`text-white text-3xl font-bold mb-1`}>Sản phẩm</Text>
+            <Text style={tw`text-blue-100 text-sm`}>Quản lý {totalProducts} sản phẩm</Text>
+          </View>
+          <View style={tw`bg-white bg-opacity-20 rounded-2xl p-3`}>
+            <Text style={tw`text-white text-3xl`}>▣</Text>
+          </View>
+        </View>
       </View>
 
-      <View style={tw`px-6 py-4`}>
+      <View style={tw`px-6 py-5 bg-gray-50`}>
         <TouchableOpacity
           onPress={() => navigation.navigate('AddProduct')}
-          style={tw`bg-yellow-600 py-4 rounded-xl mb-4`}
+          style={tw`bg-green-600 py-4 rounded-2xl shadow-md`}
         >
-          <Text style={tw`text-white text-center font-bold text-lg`}>
-            + Add New Product
-          </Text>
+          <View style={tw`flex-row items-center justify-center gap-2`}>
+            <Text style={tw`text-white text-2xl font-bold`}>+</Text>
+            <Text style={tw`text-white text-center font-bold text-lg`}>
+              Thêm sản phẩm mới
+            </Text>
+          </View>
         </TouchableOpacity>
       </View>
 
