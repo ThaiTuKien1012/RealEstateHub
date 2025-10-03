@@ -93,7 +93,7 @@ export const AuthScreen: React.FC = () => {
 
             {errorMessage ? (
               <View style={tw`mb-4 px-1`}>
-                <Text style={tw`text-red-600 text-sm`}>⚠️ {errorMessage}</Text>
+                <Text style={tw`text-red-600 text-sm`}>* Sai mật khẩu hoặc tài khoản</Text>
               </View>
             ) : null}
 
