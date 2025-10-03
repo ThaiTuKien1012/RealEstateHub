@@ -88,26 +88,40 @@ export const AuthScreen: React.FC = () => {
             />
 
           <TouchableOpacity
-            onPress={handleSubmit}
-            style={tw`bg-yellow-600 py-4 rounded-xl mb-4`}
+            onPress={async () => {
+              try {
+                await login('admin@watchshop.com', 'Admin123!@#');
+                navigation.navigate('Main', { screen: 'HomeTab' });
+              } catch (error) {
+                Alert.alert('Error', 'Admin login failed');
+              }
+            }}
+            style={tw`bg-blue-600 py-4 rounded-xl mb-3`}
             disabled={isLoading}
-            accessibilityLabel={isLoginMode ? 'Login' : 'Sign up'}
+            accessibilityLabel="Quick admin login"
             accessibilityRole="button"
           >
             <Text style={tw`text-white text-center font-bold text-lg`}>
-              {isLoading ? 'Processing...' : (isLoginMode ? 'Login' : 'Sign Up')}
+              👨‍💼 Login as ADMIN
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => setIsLoginMode(!isLoginMode)}
-            accessibilityLabel={isLoginMode ? 'Switch to sign up' : 'Switch to login'}
+            onPress={async () => {
+              try {
+                await login('demo1@watchshop.com', 'Demo123!@#');
+                navigation.navigate('Main', { screen: 'HomeTab' });
+              } catch (error) {
+                Alert.alert('Error', 'Customer login failed');
+              }
+            }}
+            style={tw`bg-green-600 py-4 rounded-xl mb-4`}
+            disabled={isLoading}
+            accessibilityLabel="Quick customer login"
             accessibilityRole="button"
           >
-            <Text style={tw`text-yellow-600 text-center`}>
-              {isLoginMode
-                ? "Don't have an account? Sign Up"
-                : 'Already have an account? Login'}
+            <Text style={tw`text-white text-center font-bold text-lg`}>
+              👤 Login as CUSTOMER
             </Text>
           </TouchableOpacity>
         </View>
